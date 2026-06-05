@@ -16,7 +16,7 @@ make dev                     # backend :8000 + frontend :5173
 
 Open http://localhost:5173, log in with any coach name (mock auth per spec), and you land on the dashboard.
 
-Other targets: `make test` (61 backend tests) · `make lint` (ruff + eslint + prettier, zero-warning bar) · `make eval` (resolver 15/15, safety scenarios 3/3).
+Other targets: `make test` (61 backend tests) · `make lint` (ruff + eslint + prettier, zero-warning bar) · `make eval` (resolver 15/15 · safety 3/3 · plan quality 3/3).
 
 Without `ANTHROPIC_API_KEY` everything deterministic still works — member dashboard, graph view, chart prompts, and the full safety/provenance pipeline; only LLM plan composition and free-form copilot chat need the key. `VOYAGE_API_KEY` enables the resolver's third (embedding) pass; without it the resolver degrades gracefully to exact + fuzzy.
 
@@ -110,6 +110,24 @@ curl -s localhost:8000/api/generate -X POST -H 'Content-Type: application/json' 
 
 or use the **Generate** tab — the provenance card renders resolved concepts, removals with graph paths, substitutes, and pipeline timings; the generated plan also appears on the dashboard's session card.
 
+## Testing & evals
+
+**Unit tests (61, red-green TDD on the deterministic core).** The spec mandates tests for the resolver and safety filter at minimum; those are the critical paths because they make the safety guarantees — a resolver false negative silently drops a coach's constraint, and a filter bug is exactly the unsafe-recommendation failure the project exists to prevent. Coverage: resolver (10), safety filter (8), both KG builders (11), runtime/validation (8), copilot tools + agent loop (12), streaming loop (5), data loader (5), graph endpoint (2). LLM-composition code is tested *structurally* (schema-valid output, no filtered exercise present) — never string-matched.
+
+**Eval pipeline (`make eval`)** — the regression gate, runs offline (no API key):
+
+- *Resolver accuracy* — 15 hand-labeled queries incl. typos ("ketlebell") and must-no-match nonsense terms: 15/15.
+- *Safety correctness* — the 3 acceptance scenarios verified against the graph (no allowed exercise stresses the injured joint / requires unavailable equipment / matches an excluded term): 3/3.
+- *Plan quality* — structural checks on full generations (warmup/main/cooldown present, no filtered IDs, sane doses, non-empty provenance): 3/3.
+
+**Evaluating in production — metrics, failure modes, monitoring:**
+
+- *Safety (the metric that matters):* zero plans containing a filtered exercise — enforced at runtime by validation, monitored by logging every rejection; any occurrence is a sev-1. Track contraindication-rule coverage as the catalog grows.
+- *Resolver quality:* precision/recall on a growing labeled set from real coach prompts; alert on rising no-match rate (vocabulary drift) and on near-threshold matches (the documented 0.85-fuzzy false-positive band) — sample those for human review.
+- *Copilot grounding:* fraction of replies with ≥1 tool call; "not in this member's context" rate vs. hallucination spot-checks; periodic LLM-as-judge pass over sampled transcripts scored against tool outputs.
+- *Latency & cost:* the per-stage timed trace (resolve → filter → compose) already separates deterministic time (~2 ms) from LLM time; alert when compose p95 exceeds the ~5 s budget. Token usage logged per call.
+- *Failure modes watched:* over-filtering (allowed_count → 0 spikes), composer schema violations (rejected-plan rate), tool errors in the agent loop, SSE disconnects.
+
 ## Trade-offs & known limits
 
 - **Token streaming** is implemented for copilot chat (SSE: `token` / `tool` / `done` events, non-streaming fallback in the client). Generation is *not* streamed — plans are validated atomically before anything is shown, which is the safer UX for a clinical-ish artifact.
@@ -118,6 +136,10 @@ or use the **Generate** tab — the provenance card renders resolved concepts, r
 - **Calendar time rows are scaffold** — workout history has dates but no time-of-day, so events place into a fixed 6:00–10:00 grid deterministically.
 - **Mock auth, single member, synthetic data only** — per spec; see Scaling for the real-auth path.
 - **Timer state in `localStorage`** — fine for a demo; would move server-side with real sessions.
+
+## How AI was used to build this
+
+The project was built by pairing with Claude (Cowork/Claude Code) under the rules in [CLAUDE.md](./CLAUDE.md): red-green TDD on the deterministic core (failing test first, then the implementation), strict typing end-to-end, one component per file, lint + tests green before any change counts as done. The workflow per phase: brainstorm and lock decisions into [PRESEARCH.md](./PRESEARCH.md)/[SUMMARY.md](./SUMMARY.md), have the agent implement against those constraints, then verify with `make test`, `make lint`, `make eval` and live API smoke tests. The dashboard UI was generated from a Future DS design handoff (design system + mockups) and re-implemented as typed React components wired to real API data — with an SSR smoke-render against the real member JSON as the visual sanity check. All worked examples in this README are captured pipeline output, not hand-written. AI is also *in* the product with the same philosophy it was built under: the LLM composes and converses, but never decides safety.
 
 ## Repo layout
 
