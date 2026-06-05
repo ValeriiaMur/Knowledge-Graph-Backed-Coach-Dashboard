@@ -37,6 +37,41 @@ def member() -> MemberContext:
     return load_member_context()
 
 
+class ChatRequest(BaseModel):
+    message: str
+    session_id: str = "default"
+
+
+@app.post("/api/copilot/chat")
+def copilot_chat(req: ChatRequest) -> dict:
+    from app.copilot.agent import run_copilot
+    from app.copilot.anthropic_chat import anthropic_chat
+
+    result = run_copilot(req.message, req.session_id, llm=anthropic_chat)
+    return {"reply": result.reply, "tool_calls": result.tool_calls, "error": result.error}
+
+
+@app.get("/api/copilot/quick-prompts")
+def quick_prompts() -> list[str]:
+    from app.copilot.agent import QUICK_PROMPTS
+
+    return QUICK_PROMPTS
+
+
+@app.get("/api/copilot/chat-history")
+def member_chat_history() -> list[dict]:
+    from app.copilot.retrieval import get_chat_history
+
+    return get_chat_history()
+
+
+@app.get("/api/member/timeseries/{metric}")
+def timeseries(metric: str) -> dict:
+    from app.copilot.retrieval import get_timeseries
+
+    return get_timeseries(metric)
+
+
 class GenerateRequest(BaseModel):
     prompt: str
     minutes: int = 30

@@ -3,7 +3,7 @@
 > Single source of truth for status, decisions, and plan. Update on every working session.
 > Spec: [ASSESSMENT.md](./ASSESSMENT.md) · Scoping: [PRESEARCH.md](./PRESEARCH.md) · Diagram: [system-design.svg](./system-design.svg) · Rules: [AGENT_RULES.md](./AGENT_RULES.md)
 
-**Last updated:** 2026-06-04 · **Status:** phase 4 complete, phase 5 (copilot) next
+**Last updated:** 2026-06-04 · **Status:** phase 5 complete, phase 6 (UI + nice-to-haves) next
 
 ---
 
@@ -32,7 +32,7 @@ Coach-facing dashboard for Future's take-home: (A) a workout generator driven by
 | 2 | KG 1 + KG 2 | NetworkX graphs, schema doc, SNOMED/OPE mapping table | 2h | ✅ |
 | 3 | Resolver + safety filter | 3-pass resolver with thresholds, traversal filter, pytest both | 2h | ✅ |
 | 4 | Agentic runtime | Tool-use loop, plan composer, provenance trace | 2h | ✅ |
-| 5 | Copilot | Retrieval over KG 2, quick prompts, charts, chat history | 2h | ☐ |
+| 5 | Copilot | Retrieval over KG 2, quick prompts, charts, chat history | 2h | ✅ |
 | 6 | UI polish + nice-to-haves | Graph viz, streaming, trace view, eval script | 2h | ☐ |
 | 7 | README + examples | Diagram, trade-offs, 3 worked examples, runthrough test | 1.5h | ☐ |
 
@@ -50,6 +50,8 @@ Critical path: phases 2–3 — everything downstream consumes the graphs and th
 - (none — resolved during pre-search; add new ones here as they come up)
 
 ## Changelog
+
+- **2026-06-04** — Phase 5 done: copilot — 13 grounded retrieval tools over KG 2 (brief, adherence, churn, sleep, biomarkers, labs, injuries, goals, prefs, chats, workouts, what-changed, timeseries w/ honest unknown-metric error); agent tool-use loop (injectable LLM, session history, unknown-tool resilience, iteration cap); Anthropic adapter; endpoints /api/copilot/chat, /quick-prompts, /chat-history, /api/member/timeseries/{metric}. 54 tests green, lint clean, endpoints verified live.
 
 - **2026-06-04** — Phase 4 done: agentic runtime — constraints derived from KG 2 (injury/condition/equipment auto-applied) + deterministic prompt scanning w/ honest unresolved reporting; LLM composer injectable (fake in tests, Claude tool-use `submit_plan` in prod); plans referencing filtered exercises rejected by validation; provenance + timed trace on every generation; POST /api/generate wired. 42 tests green, lint clean. Needs ANTHROPIC_API_KEY in .env for live generation.
 
