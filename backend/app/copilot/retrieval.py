@@ -4,13 +4,13 @@ Unknown data → explicit error: 'not in this member's context' beats a guess.""
 
 from typing import Any
 
-from app.graph.member_kg import build_member_graph
+from app.graph.member_kg import build_member_graph, member_node
+from app.graph.terms import Kind
 
 
 def _member() -> tuple[Any, dict]:
     g = build_member_graph()
-    nid = next(n for n, d in g.nodes(data=True) if d["kind"] == "member")
-    return g, g.nodes[nid]
+    return g, g.nodes[member_node(g)]
 
 
 def get_brief() -> dict:
@@ -61,7 +61,7 @@ def get_injuries() -> list[dict]:
             "notes": d["notes"],
         }
         for _, d in g.nodes(data=True)
-        if d["kind"] == "injury"
+        if d["kind"] == Kind.INJURY
     ]
 
 
@@ -70,13 +70,13 @@ def get_goals() -> list[dict]:
     return [
         {"text": d["name"], **{k: v for k, v in d.items() if k not in {"kind", "name"}}}
         for _, d in g.nodes(data=True)
-        if d["kind"] == "goal"
+        if d["kind"] == Kind.GOAL
     ]
 
 
 def get_chat_history() -> list[dict]:
     g, _ = _member()
-    msgs = [d for _, d in g.nodes(data=True) if d["kind"] == "chat_message"]
+    msgs = [d for _, d in g.nodes(data=True) if d["kind"] == Kind.CHAT_MESSAGE]
     return sorted(
         (
             {
@@ -94,7 +94,7 @@ def get_chat_history() -> list[dict]:
 
 def get_workout_history() -> list[dict]:
     g, _ = _member()
-    sessions = [d for _, d in g.nodes(data=True) if d["kind"] == "workout_session"]
+    sessions = [d for _, d in g.nodes(data=True) if d["kind"] == Kind.WORKOUT_SESSION]
     keep = ("date", "title", "planned", "completed", "duration_min", "rpe", "exercises")
     return sorted(
         ({k: d.get(k) for k in keep} for d in sessions),

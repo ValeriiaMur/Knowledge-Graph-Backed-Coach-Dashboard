@@ -13,6 +13,7 @@ import time
 from collections.abc import Callable
 
 from app.graph.movement_kg import build_movement_graph
+from app.graph.terms import Rel
 from app.runtime.constraints import derive_constraints
 from app.runtime.schemas import (
     GenerationResult,
@@ -125,8 +126,8 @@ def _selection_rationale(
             continue
         seen.add(item.exercise)
         edges = list(g.out_edges(item.exercise, data=True))
-        targets = [v for _, v, d in edges if d["rel"] == "targets"]
-        patterns = [v for _, v, d in edges if d["rel"] == "follows"]
+        targets = [v for _, v, d in edges if d["rel"] == Rel.TARGETS]
+        patterns = [v for _, v, d in edges if d["rel"] == Rel.FOLLOWS]
         matches = [f'"{resolved_ids[v]}" → {v}' for _, v, d in edges if v in resolved_ids]
         entry = by_id.get(item.exercise)
         reason = (

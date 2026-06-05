@@ -19,7 +19,7 @@ export type ProgressWeek = {
 export type ProgramSeg = { lab: string; val: string; style: SegStyle; flex: number };
 export type Program = { title: string; pct: string; segs: ProgramSeg[] };
 export type AccordionItem = { ic: string; nm: string; sub: string };
-export type AccordionSection = { title: string; open: boolean; items: AccordionItem[] };
+export type AccordionSection = { title: string; items: AccordionItem[] };
 export type CalendarEvent = {
   col: number;
   row: number;
@@ -208,16 +208,14 @@ export function buildAccordions(m: MemberProfile): AccordionSection[] {
   return [
     {
       title: "Equipment",
-      open: true,
       items: m.equipment_available.map((e) => ({
         ic: iconForEquipment(e),
         nm: e,
-        sub: "available at home",
+        sub: "",
       })),
     },
     {
       title: "Injuries",
-      open: false,
       items: m.injuries.map((inj) => ({
         ic: "bell",
         nm: inj.region,
@@ -226,27 +224,29 @@ export function buildAccordions(m: MemberProfile): AccordionSection[] {
     },
     {
       title: "Goals",
-      open: false,
       items: m.goals.map((g) => ({
         ic: "bolt",
         nm: g.text,
-        sub: g.target_date ? `target ${g.target_date}` : `priority ${g.priority}`,
+        sub: g.target_date ?? "",
       })),
     },
     {
       title: "Preferences",
-      open: false,
       items: [
         {
           ic: "clock",
           nm: `${m.preferences.training_days_per_week}×/week · ${m.preferences.preferred_session_minutes} min`,
           sub: m.preferences.preferred_days.join(" · "),
         },
-        {
-          ic: "dots",
-          nm: "Dislikes",
-          sub: m.preferences.dislikes.join(", ") || "none",
-        },
+        ...(m.preferences.dislikes.length > 0
+          ? [
+              {
+                ic: "dots",
+                nm: m.preferences.dislikes.join(", "),
+                sub: "dislikes",
+              },
+            ]
+          : []),
       ],
     },
   ];

@@ -14,6 +14,7 @@ from rapidfuzz import fuzz, process
 
 from app.graph.movement_kg import build_movement_graph
 from app.graph.ontology import REGION_ALIASES
+from app.graph.terms import Kind
 
 FUZZY_FLOOR = 0.85  # rapidfuzz WRatio/100; tuned on the eval set (phase 6)
 EMBEDDING_FLOOR = 0.75  # cosine similarity floor
@@ -51,7 +52,13 @@ def _candidate_index() -> dict[str, str]:
     g = build_movement_graph()
     index: dict[str, str] = {}
     for nid, data in g.nodes(data=True):
-        if data["kind"] in {"muscle", "joint", "equipment", "movement_pattern", "exercise"}:
+        if data["kind"] in {
+            Kind.MUSCLE,
+            Kind.JOINT,
+            Kind.EQUIPMENT,
+            Kind.MOVEMENT_PATTERN,
+            Kind.EXERCISE,
+        }:
             index[data["name"].lower()] = nid
     # Region aliases map onto joints — safety-relevant, so they take priority.
     for alias, joint in REGION_ALIASES.items():

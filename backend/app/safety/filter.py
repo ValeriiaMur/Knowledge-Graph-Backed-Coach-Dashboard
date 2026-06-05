@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 import networkx as nx
 
 from app.graph.movement_kg import build_movement_graph, descendants_of
+from app.graph.terms import Kind, Rel
 
 
 @dataclass
@@ -54,7 +55,7 @@ def _out(g: nx.MultiDiGraph, node: str, rel: str) -> set[str]:
 
 def apply_safety_filter(constraints: SafetyConstraints) -> FilterResult:
     g = build_movement_graph()
-    exercises = [n for n, d in g.nodes(data=True) if d["kind"] == "exercise"]
+    exercises = [n for n, d in g.nodes(data=True) if d["kind"] == Kind.EXERCISE]
 
     removed: list[RemovedExercise] = []
     down_rank: dict[str, str] = {}
@@ -67,7 +68,7 @@ def apply_safety_filter(constraints: SafetyConstraints) -> FilterResult:
         if not g.has_node(cond):
             continue
         for _, pattern, d in g.out_edges(cond, data=True):
-            if d["rel"] != "contraindicated_for":
+            if d["rel"] != Rel.CONTRAINDICATED_FOR:
                 continue
             path = f"{cond} -contraindicated_for({d['mode']})-> {pattern}"
             if d["mode"] == "exclude":
@@ -96,7 +97,7 @@ def apply_safety_filter(constraints: SafetyConstraints) -> FilterResult:
             continue
 
         # 2 · injury traversal
-        stressed = _out(g, ex, "stresses")
+        stressed = _out(g, ex, Rel.STRESSES)
         hit = next((s for s in stressed if s in injured_region), None)
         if hit:
             src = injured_region[hit]
@@ -112,7 +113,7 @@ def apply_safety_filter(constraints: SafetyConstraints) -> FilterResult:
             continue
 
         # 3 · condition contraindications
-        patterns = _out(g, ex, "follows")
+        patterns = _out(g, ex, Rel.FOLLOWS)
         excl_hit = next((p for p in patterns if p in exclude_patterns), None)
         if excl_hit:
             removed.append(
@@ -127,7 +128,7 @@ def apply_safety_filter(constraints: SafetyConstraints) -> FilterResult:
 
         # 4 · equipment availability
         if constraints.available_equipment is not None:
-            required = _out(g, ex, "requires")
+            required = _out(g, ex, Rel.REQUIRES)
             missing = required - set(constraints.available_equipment)
             if missing:
                 removed.append(
@@ -158,12 +159,12 @@ def apply_safety_filter(constraints: SafetyConstraints) -> FilterResult:
     for r in removed:
         if r.reason != "equipment":
             continue
-        muscles = _out(g, r.node_id, "targets")
-        patterns = _out(g, r.node_id, "follows")
+        muscles = _out(g, r.node_id, Rel.TARGETS)
+        patterns = _out(g, r.node_id, Rel.FOLLOWS)
         subs = [
             g.nodes[a]["name"]
             for a in allowed_ids
-            if _out(g, a, "targets") & muscles and _out(g, a, "follows") & patterns
+            if _out(g, a, Rel.TARGETS) & muscles and _out(g, a, Rel.FOLLOWS) & patterns
         ]
         r.substitutes = sorted(subs)[:3]
 

@@ -9,7 +9,8 @@ catch richer phrasings; safety correctness wins for the take-home.
 import re
 from dataclasses import dataclass, field
 
-from app.graph.member_kg import build_member_graph
+from app.graph.member_kg import build_member_graph, member_node
+from app.graph.terms import Rel
 from app.resolver.resolver import ResolvedConcept, resolve
 from app.safety.filter import SafetyConstraints
 
@@ -76,18 +77,20 @@ def derive_constraints(prompt: str, use_member_context: bool = True) -> DerivedC
     # (a) Member context: injuries, conditions, equipment — applied automatically.
     if use_member_context:
         g = build_member_graph()
-        member = next(n for n, d in g.nodes(data=True) if d["kind"] == "member")
+        member = member_node(g)
         for _, inj, d in g.out_edges(member, data=True):
-            if d["rel"] != "has_injury":
+            if d["rel"] != Rel.HAS_INJURY:
                 continue
             for _, joint, dd in g.out_edges(inj, data=True):
-                if dd["rel"] == "affects":
+                if dd["rel"] == Rel.AFFECTS:
                     constraints.injured_joints.append(joint)
             # The seeded PFPS condition rides with the knee injury.
             notes = (g.nodes[inj].get("notes") or "").lower()
             if "patellofemoral" in notes:
                 constraints.conditions.append("condition:patellofemoral pain syndrome")
-        equipment = [v for _, v, d in g.out_edges(member, data=True) if d["rel"] == "has_equipment"]
+        equipment = [
+            v for _, v, d in g.out_edges(member, data=True) if d["rel"] == Rel.HAS_EQUIPMENT
+        ]
         if equipment:
             constraints.available_equipment = equipment
 

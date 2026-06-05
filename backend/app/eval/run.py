@@ -1,6 +1,7 @@
 """Eval pipeline (`make eval`) — resolver accuracy + safety-filter correctness
 over a hand-labeled set. Doubles as the regression suite (PRESEARCH §9/§13)."""
 
+from app.graph.terms import Rel
 from app.resolver.resolver import resolve
 from app.safety.filter import SafetyConstraints, apply_safety_filter
 
@@ -73,11 +74,11 @@ def run_safety_eval() -> tuple[int, int, list[str]]:
         for ex in result.allowed:
             edges = list(g.out_edges(ex.node_id, data=True))
             if case.get("must_not_stress") and any(
-                v == case["must_not_stress"] for _, v, d in edges if d["rel"] == "stresses"
+                v == case["must_not_stress"] for _, v, d in edges if d["rel"] == Rel.STRESSES
             ):
                 violations.append(ex.name)
             if case.get("must_not_require") and any(
-                v == case["must_not_require"] for _, v, d in edges if d["rel"] == "requires"
+                v == case["must_not_require"] for _, v, d in edges if d["rel"] == Rel.REQUIRES
             ):
                 violations.append(ex.name)
             if case.get("must_not_name") and case["must_not_name"] in ex.name.lower():
