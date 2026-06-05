@@ -1,0 +1,1256 @@
+{
+ "exclude-deadlifts": {
+  "prompt": "Full-body strength, exclude deadlifts",
+  "plan": {
+   "warmup": [
+    {
+     "exercise": "exercise:0e3201e9-4394-4902-a717-f4ce544d98de",
+     "name": "Push-Up to Knee-Drive",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    }
+   ],
+   "main": [
+    {
+     "exercise": "exercise:1465f189-eb62-410d-a73e-590a84693dd0",
+     "name": "Dumbbell Neutral-Grip Bench Press",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    },
+    {
+     "exercise": "exercise:03258dbf-bc21-4495-bcae-ca627b3a0f20",
+     "name": "Alternating Dumbbell Overhead Press",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    },
+    {
+     "exercise": "exercise:0a2dc786-fb42-4571-9b26-f58cdeb2c70e",
+     "name": "Bodyweight Pike",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    },
+    {
+     "exercise": "exercise:12b80a72-6c2f-43f0-b3bd-6b11e14e3358",
+     "name": "Resistance Band Reverse Curl",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    }
+   ],
+   "cooldown": [
+    {
+     "exercise": "exercise:0aa65232-8367-4622-b0ef-37e31626ba65",
+     "name": "Bench-Lying Single-Arm Dumbbell Tricep Extension",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    }
+   ]
+  },
+  "provenance": {
+   "resolved_concepts": [],
+   "unresolved": [],
+   "removed": [
+    {
+     "node_id": "exercise:0b3178cf-bf89-45a3-bfb0-27310ef6ef38",
+     "name": "Barbell Decline Bench Press",
+     "reason": "equipment",
+     "graph_path": "exercise:0b3178cf-bf89-45a3-bfb0-27310ef6ef38 -requires-> ['equipment:Adjustable Bench - Decline', 'equipment:Barbell', 'equipment:Plate', 'equipment:Rack'] \u2209 available",
+     "substitutes": [
+      "Dumbbell Neutral-Grip Bench Press",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:0fa0eb42-797f-4752-9a80-68e2dfb2a935",
+     "name": "Alternating Dumbbell Decline Bench Press",
+     "reason": "equipment",
+     "graph_path": "exercise:0fa0eb42-797f-4752-9a80-68e2dfb2a935 -requires-> ['equipment:Adjustable Bench - Decline'] \u2209 available",
+     "substitutes": [
+      "Dumbbell Neutral-Grip Bench Press",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:13261989-7436-44d0-8daf-754b259e5af8",
+     "name": "Dumbbell Incline Chest Fly",
+     "reason": "equipment",
+     "graph_path": "exercise:13261989-7436-44d0-8daf-754b259e5af8 -requires-> ['equipment:Adjustable Bench - Incline'] \u2209 available",
+     "substitutes": [
+      "Dumbbell Neutral-Grip Bench Press",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:0a5efec6-b142-4a20-8c6d-5829ddc248af",
+     "name": "Isometric Pull-Up",
+     "reason": "equipment",
+     "graph_path": "exercise:0a5efec6-b142-4a20-8c6d-5829ddc248af -requires-> ['equipment:Pull-Up Bar'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0b6fcb1c-aa47-455b-8a9f-f9d1582745df",
+     "name": "Band-Assisted Chin-Up (From Foot)",
+     "reason": "equipment",
+     "graph_path": "exercise:0b6fcb1c-aa47-455b-8a9f-f9d1582745df -requires-> ['equipment:Pull-Up Bar'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0fb071d6-2ca0-46ac-a855-83a0029b2ccc",
+     "name": "Machine - Single-Arm Lat Pull-Down",
+     "reason": "equipment",
+     "graph_path": "exercise:0fb071d6-2ca0-46ac-a855-83a0029b2ccc -requires-> ['equipment:Seated Lat Pulldown Machine'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:12918da8-e735-45e3-9185-8f6c074397a3",
+     "name": "Kneeling Stability Ball Lat Stretch",
+     "reason": "injury",
+     "graph_path": "exercise:12918da8-e735-45e3-9185-8f6c074397a3 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01128a8f-44a4-43ae-a172-b6a32b2e8534",
+     "name": "Med Ball Scoop Toss",
+     "reason": "injury",
+     "graph_path": "exercise:01128a8f-44a4-43ae-a172-b6a32b2e8534 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0b1250ab-ac21-42a3-8aff-87f75e85eea0",
+     "name": "Bench-Supported Incline YTI",
+     "reason": "equipment",
+     "graph_path": "exercise:0b1250ab-ac21-42a3-8aff-87f75e85eea0 -requires-> ['equipment:Adjustable Bench - Incline'] \u2209 available",
+     "substitutes": [
+      "Standing Neck Circles",
+      "Walking Toe Touches"
+     ]
+    },
+    {
+     "node_id": "exercise:004717c7-4e34-4a26-978f-50106f09abcc",
+     "name": "Wide-Grip Preacher Curl with EZ Bar",
+     "reason": "equipment",
+     "graph_path": "exercise:004717c7-4e34-4a26-978f-50106f09abcc -requires-> ['equipment:EZ Bar', 'equipment:Preacher Curl Bench'] \u2209 available",
+     "substitutes": [
+      "Resistance Band Reverse Curl"
+     ]
+    },
+    {
+     "node_id": "exercise:14a8ad1b-09c9-4572-860c-9d6b231a3a72",
+     "name": "Single-Arm Dumbbell Preacher Curl",
+     "reason": "equipment",
+     "graph_path": "exercise:14a8ad1b-09c9-4572-860c-9d6b231a3a72 -requires-> ['equipment:Preacher Curl Bench'] \u2209 available",
+     "substitutes": [
+      "Resistance Band Reverse Curl"
+     ]
+    },
+    {
+     "node_id": "exercise:12fe4a7f-cdf9-411e-9272-868a74debfeb",
+     "name": "Single-Arm Cable Tricep Extension",
+     "reason": "equipment",
+     "graph_path": "exercise:12fe4a7f-cdf9-411e-9272-868a74debfeb -requires-> ['equipment:Cable Resistance Machine', 'equipment:Handle Attachment'] \u2209 available",
+     "substitutes": [
+      "Bench-Lying Single-Arm Dumbbell Tricep Extension"
+     ]
+    },
+    {
+     "node_id": "exercise:297668c1-4006-4280-8208-ea3cd99d3264",
+     "name": "Suspension Tricep Press",
+     "reason": "equipment",
+     "graph_path": "exercise:297668c1-4006-4280-8208-ea3cd99d3264 -requires-> ['equipment:Suspension Trainer'] \u2209 available",
+     "substitutes": [
+      "Bench-Lying Single-Arm Dumbbell Tricep Extension",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:00036a08-7c22-42e4-8fe5-323b53e31667",
+     "name": "Kettlebell Goblet Cyclist Squat",
+     "reason": "injury",
+     "graph_path": "exercise:00036a08-7c22-42e4-8fe5-323b53e31667 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00cc383b-f156-4b23-952a-15340100c261",
+     "name": "RNT Split Squat",
+     "reason": "injury",
+     "graph_path": "exercise:00cc383b-f156-4b23-952a-15340100c261 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01ff62bc-e887-49e4-9cc8-bcd367b34cfd",
+     "name": "Static Jump",
+     "reason": "injury",
+     "graph_path": "exercise:01ff62bc-e887-49e4-9cc8-bcd367b34cfd -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0252c3c1-435f-49a2-9f79-5ef53eec3b1b",
+     "name": "Med Ball Split Squat",
+     "reason": "injury",
+     "graph_path": "exercise:0252c3c1-435f-49a2-9f79-5ef53eec3b1b -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:02fe4cf5-bb21-4bef-868f-fea1477e2a53",
+     "name": "Dumbbell Goblet Split Squat",
+     "reason": "injury",
+     "graph_path": "exercise:02fe4cf5-bb21-4bef-868f-fea1477e2a53 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0732c6eb-2275-4af3-8276-9bb8be2aa12d",
+     "name": "One-Kettlebell Hamstring Walkout",
+     "reason": "injury",
+     "graph_path": "exercise:0732c6eb-2275-4af3-8276-9bb8be2aa12d -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0a4d99cf-5075-468e-9551-b9f8efa267f1",
+     "name": "World's Greatest Stretch",
+     "reason": "injury",
+     "graph_path": "exercise:0a4d99cf-5075-468e-9551-b9f8efa267f1 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:2248e07a-93de-4da1-ad20-aff27537a99a",
+     "name": "Med Ball Hamstring Walkout",
+     "reason": "injury",
+     "graph_path": "exercise:2248e07a-93de-4da1-ad20-aff27537a99a -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00678525-7d38-4a9e-8998-a299a209c724",
+     "name": "Alternating Dumbbell Racked Crossback Lunge",
+     "reason": "injury",
+     "graph_path": "exercise:00678525-7d38-4a9e-8998-a299a209c724 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00a510b1-4676-4433-a37d-30f63e1b8a4f",
+     "name": "Stair Climber",
+     "reason": "injury",
+     "graph_path": "exercise:00a510b1-4676-4433-a37d-30f63e1b8a4f -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00b26731-066f-4b69-96e8-3472fc6fbc09",
+     "name": "Barbell Racked Forward Lunge",
+     "reason": "injury",
+     "graph_path": "exercise:00b26731-066f-4b69-96e8-3472fc6fbc09 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00c7ac93-153e-4b96-be56-b4ca6b465369",
+     "name": "Barbell Step Up to Knee-Drive",
+     "reason": "injury",
+     "graph_path": "exercise:00c7ac93-153e-4b96-be56-b4ca6b465369 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01e33d9f-3607-49db-bd59-af7f61d77300",
+     "name": "Vertical Jump to Broad Jump",
+     "reason": "injury",
+     "graph_path": "exercise:01e33d9f-3607-49db-bd59-af7f61d77300 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01f5a2bb-ecf7-4168-92b3-35bd78592e26",
+     "name": "High Plank Bird Dog",
+     "reason": "injury",
+     "graph_path": "exercise:01f5a2bb-ecf7-4168-92b3-35bd78592e26 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0333b0cc-4b43-45d9-adff-505b349e53d9",
+     "name": "Sandbag Zercher Carry",
+     "reason": "injury",
+     "graph_path": "exercise:0333b0cc-4b43-45d9-adff-505b349e53d9 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:03ba2166-a5e6-4d0d-9110-ab5b73acdd50",
+     "name": "BOSU Step Over",
+     "reason": "injury",
+     "graph_path": "exercise:03ba2166-a5e6-4d0d-9110-ab5b73acdd50 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01bc9947-23e6-4dcf-bf66-6381a2c29700",
+     "name": "Jumping Jack",
+     "reason": "condition",
+     "graph_path": "exercise:01bc9947-23e6-4dcf-bf66-6381a2c29700 -follows-> condition:patellofemoral pain syndrome -contraindicated_for(exclude)-> movement_pattern:cardio - plyometric",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0a0b8a72-0bd4-41aa-9fac-e0b44356ca8f",
+     "name": "Horizontal Leg Press Calf Raises",
+     "reason": "equipment",
+     "graph_path": "exercise:0a0b8a72-0bd4-41aa-9fac-e0b44356ca8f -requires-> ['equipment:Horizontal Leg Press Machine'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:10336de1-5994-4074-aa52-9b1b28d845a3",
+     "name": "Jump Rope - Single-Leg",
+     "reason": "condition",
+     "graph_path": "exercise:10336de1-5994-4074-aa52-9b1b28d845a3 -follows-> condition:patellofemoral pain syndrome -contraindicated_for(exclude)-> movement_pattern:cardio - plyometric",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:11afb04e-9b3d-413f-a4cc-8c03a2fb5d93",
+     "name": "Lacrosse Ball Upper Back against Wall",
+     "reason": "equipment",
+     "graph_path": "exercise:11afb04e-9b3d-413f-a4cc-8c03a2fb5d93 -requires-> ['equipment:Lacrosse Ball', 'equipment:Wall'] \u2209 available",
+     "substitutes": [
+      "Standing Neck Circles"
+     ]
+    },
+    {
+     "node_id": "exercise:12573626-5760-4d71-8cb5-e255daaa0b42",
+     "name": "Single-Arm Chest-Supported Incline Row",
+     "reason": "equipment",
+     "graph_path": "exercise:12573626-5760-4d71-8cb5-e255daaa0b42 -requires-> ['equipment:Adjustable Bench - Incline'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:1abf5a3d-25ca-4ee8-89d9-d3d8c6a53691",
+     "name": "Machine - Chest-Supported Row",
+     "reason": "equipment",
+     "graph_path": "exercise:1abf5a3d-25ca-4ee8-89d9-d3d8c6a53691 -requires-> ['equipment:Chest Supported Row Machine'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:02d6478f-0579-480b-a188-8e719d4fda14",
+     "name": "Low Copenhagen Plank",
+     "reason": "injury",
+     "graph_path": "exercise:02d6478f-0579-480b-a188-8e719d4fda14 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:07772057-db56-4cfb-ae4b-f98f4cac6b9a",
+     "name": "Anchored Band Rotational Lift",
+     "reason": "equipment",
+     "graph_path": "exercise:07772057-db56-4cfb-ae4b-f98f4cac6b9a -requires-> ['equipment:Resistance Band - With Handles'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:1965072a-7e34-4d37-98f5-bde8cb6629a4",
+     "name": "Cow Pose",
+     "reason": "injury",
+     "graph_path": "exercise:1965072a-7e34-4d37-98f5-bde8cb6629a4 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:201032fe-3189-4c79-a69b-e67e2c7e9b81",
+     "name": "SkiErg",
+     "reason": "equipment",
+     "graph_path": "exercise:201032fe-3189-4c79-a69b-e67e2c7e9b81 -requires-> ['equipment:SkiErg'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0263d731-ceb6-41d0-b01f-88f0f177623b",
+     "name": "Standing Miniband Hip Flexion",
+     "reason": "injury",
+     "graph_path": "exercise:0263d731-ceb6-41d0-b01f-88f0f177623b -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    }
+   ],
+   "allowed_count": 10,
+   "down_ranked": []
+  },
+  "trace": [
+   {
+    "step": "resolve_concepts",
+    "ms": 2.08
+   },
+   {
+    "step": "safety_filter",
+    "ms": 1.01
+   },
+   {
+    "step": "compose_plan",
+    "ms": 0.0
+   }
+  ],
+  "error": null
+ },
+ "knee": {
+  "prompt": "Lower-body session, her left knee is bothering her",
+  "plan": {
+   "warmup": [
+    {
+     "exercise": "exercise:0e3201e9-4394-4902-a717-f4ce544d98de",
+     "name": "Push-Up to Knee-Drive",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    }
+   ],
+   "main": [
+    {
+     "exercise": "exercise:1465f189-eb62-410d-a73e-590a84693dd0",
+     "name": "Dumbbell Neutral-Grip Bench Press",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    },
+    {
+     "exercise": "exercise:03258dbf-bc21-4495-bcae-ca627b3a0f20",
+     "name": "Alternating Dumbbell Overhead Press",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    },
+    {
+     "exercise": "exercise:0a2dc786-fb42-4571-9b26-f58cdeb2c70e",
+     "name": "Bodyweight Pike",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    },
+    {
+     "exercise": "exercise:12b80a72-6c2f-43f0-b3bd-6b11e14e3358",
+     "name": "Resistance Band Reverse Curl",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    }
+   ],
+   "cooldown": [
+    {
+     "exercise": "exercise:0aa65232-8367-4622-b0ef-37e31626ba65",
+     "name": "Bench-Lying Single-Arm Dumbbell Tricep Extension",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    }
+   ]
+  },
+  "provenance": {
+   "resolved_concepts": [
+    {
+     "query": "session her left",
+     "node_id": "joint:knee",
+     "method": "fuzzy",
+     "confidence": 0.855,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    },
+    {
+     "query": "her left knee",
+     "node_id": "joint:knee",
+     "method": "fuzzy",
+     "confidence": 0.95,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    },
+    {
+     "query": "left knee is",
+     "node_id": "joint:knee",
+     "method": "fuzzy",
+     "confidence": 0.95,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    },
+    {
+     "query": "knee is bothering",
+     "node_id": "joint:knee",
+     "method": "fuzzy",
+     "confidence": 0.9,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    }
+   ],
+   "unresolved": [],
+   "removed": [
+    {
+     "node_id": "exercise:0b3178cf-bf89-45a3-bfb0-27310ef6ef38",
+     "name": "Barbell Decline Bench Press",
+     "reason": "equipment",
+     "graph_path": "exercise:0b3178cf-bf89-45a3-bfb0-27310ef6ef38 -requires-> ['equipment:Adjustable Bench - Decline', 'equipment:Barbell', 'equipment:Plate', 'equipment:Rack'] \u2209 available",
+     "substitutes": [
+      "Dumbbell Neutral-Grip Bench Press",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:0fa0eb42-797f-4752-9a80-68e2dfb2a935",
+     "name": "Alternating Dumbbell Decline Bench Press",
+     "reason": "equipment",
+     "graph_path": "exercise:0fa0eb42-797f-4752-9a80-68e2dfb2a935 -requires-> ['equipment:Adjustable Bench - Decline'] \u2209 available",
+     "substitutes": [
+      "Dumbbell Neutral-Grip Bench Press",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:13261989-7436-44d0-8daf-754b259e5af8",
+     "name": "Dumbbell Incline Chest Fly",
+     "reason": "equipment",
+     "graph_path": "exercise:13261989-7436-44d0-8daf-754b259e5af8 -requires-> ['equipment:Adjustable Bench - Incline'] \u2209 available",
+     "substitutes": [
+      "Dumbbell Neutral-Grip Bench Press",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:0a5efec6-b142-4a20-8c6d-5829ddc248af",
+     "name": "Isometric Pull-Up",
+     "reason": "equipment",
+     "graph_path": "exercise:0a5efec6-b142-4a20-8c6d-5829ddc248af -requires-> ['equipment:Pull-Up Bar'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0b6fcb1c-aa47-455b-8a9f-f9d1582745df",
+     "name": "Band-Assisted Chin-Up (From Foot)",
+     "reason": "equipment",
+     "graph_path": "exercise:0b6fcb1c-aa47-455b-8a9f-f9d1582745df -requires-> ['equipment:Pull-Up Bar'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0fb071d6-2ca0-46ac-a855-83a0029b2ccc",
+     "name": "Machine - Single-Arm Lat Pull-Down",
+     "reason": "equipment",
+     "graph_path": "exercise:0fb071d6-2ca0-46ac-a855-83a0029b2ccc -requires-> ['equipment:Seated Lat Pulldown Machine'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:12918da8-e735-45e3-9185-8f6c074397a3",
+     "name": "Kneeling Stability Ball Lat Stretch",
+     "reason": "injury",
+     "graph_path": "exercise:12918da8-e735-45e3-9185-8f6c074397a3 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01128a8f-44a4-43ae-a172-b6a32b2e8534",
+     "name": "Med Ball Scoop Toss",
+     "reason": "injury",
+     "graph_path": "exercise:01128a8f-44a4-43ae-a172-b6a32b2e8534 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0b1250ab-ac21-42a3-8aff-87f75e85eea0",
+     "name": "Bench-Supported Incline YTI",
+     "reason": "equipment",
+     "graph_path": "exercise:0b1250ab-ac21-42a3-8aff-87f75e85eea0 -requires-> ['equipment:Adjustable Bench - Incline'] \u2209 available",
+     "substitutes": [
+      "Standing Neck Circles",
+      "Walking Toe Touches"
+     ]
+    },
+    {
+     "node_id": "exercise:004717c7-4e34-4a26-978f-50106f09abcc",
+     "name": "Wide-Grip Preacher Curl with EZ Bar",
+     "reason": "equipment",
+     "graph_path": "exercise:004717c7-4e34-4a26-978f-50106f09abcc -requires-> ['equipment:EZ Bar', 'equipment:Preacher Curl Bench'] \u2209 available",
+     "substitutes": [
+      "Resistance Band Reverse Curl"
+     ]
+    },
+    {
+     "node_id": "exercise:14a8ad1b-09c9-4572-860c-9d6b231a3a72",
+     "name": "Single-Arm Dumbbell Preacher Curl",
+     "reason": "equipment",
+     "graph_path": "exercise:14a8ad1b-09c9-4572-860c-9d6b231a3a72 -requires-> ['equipment:Preacher Curl Bench'] \u2209 available",
+     "substitutes": [
+      "Resistance Band Reverse Curl"
+     ]
+    },
+    {
+     "node_id": "exercise:12fe4a7f-cdf9-411e-9272-868a74debfeb",
+     "name": "Single-Arm Cable Tricep Extension",
+     "reason": "equipment",
+     "graph_path": "exercise:12fe4a7f-cdf9-411e-9272-868a74debfeb -requires-> ['equipment:Cable Resistance Machine', 'equipment:Handle Attachment'] \u2209 available",
+     "substitutes": [
+      "Bench-Lying Single-Arm Dumbbell Tricep Extension"
+     ]
+    },
+    {
+     "node_id": "exercise:297668c1-4006-4280-8208-ea3cd99d3264",
+     "name": "Suspension Tricep Press",
+     "reason": "equipment",
+     "graph_path": "exercise:297668c1-4006-4280-8208-ea3cd99d3264 -requires-> ['equipment:Suspension Trainer'] \u2209 available",
+     "substitutes": [
+      "Bench-Lying Single-Arm Dumbbell Tricep Extension",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:00036a08-7c22-42e4-8fe5-323b53e31667",
+     "name": "Kettlebell Goblet Cyclist Squat",
+     "reason": "injury",
+     "graph_path": "exercise:00036a08-7c22-42e4-8fe5-323b53e31667 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00cc383b-f156-4b23-952a-15340100c261",
+     "name": "RNT Split Squat",
+     "reason": "injury",
+     "graph_path": "exercise:00cc383b-f156-4b23-952a-15340100c261 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01ff62bc-e887-49e4-9cc8-bcd367b34cfd",
+     "name": "Static Jump",
+     "reason": "injury",
+     "graph_path": "exercise:01ff62bc-e887-49e4-9cc8-bcd367b34cfd -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0252c3c1-435f-49a2-9f79-5ef53eec3b1b",
+     "name": "Med Ball Split Squat",
+     "reason": "injury",
+     "graph_path": "exercise:0252c3c1-435f-49a2-9f79-5ef53eec3b1b -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:02fe4cf5-bb21-4bef-868f-fea1477e2a53",
+     "name": "Dumbbell Goblet Split Squat",
+     "reason": "injury",
+     "graph_path": "exercise:02fe4cf5-bb21-4bef-868f-fea1477e2a53 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0732c6eb-2275-4af3-8276-9bb8be2aa12d",
+     "name": "One-Kettlebell Hamstring Walkout",
+     "reason": "injury",
+     "graph_path": "exercise:0732c6eb-2275-4af3-8276-9bb8be2aa12d -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0a4d99cf-5075-468e-9551-b9f8efa267f1",
+     "name": "World's Greatest Stretch",
+     "reason": "injury",
+     "graph_path": "exercise:0a4d99cf-5075-468e-9551-b9f8efa267f1 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:2248e07a-93de-4da1-ad20-aff27537a99a",
+     "name": "Med Ball Hamstring Walkout",
+     "reason": "injury",
+     "graph_path": "exercise:2248e07a-93de-4da1-ad20-aff27537a99a -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00678525-7d38-4a9e-8998-a299a209c724",
+     "name": "Alternating Dumbbell Racked Crossback Lunge",
+     "reason": "injury",
+     "graph_path": "exercise:00678525-7d38-4a9e-8998-a299a209c724 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00a510b1-4676-4433-a37d-30f63e1b8a4f",
+     "name": "Stair Climber",
+     "reason": "injury",
+     "graph_path": "exercise:00a510b1-4676-4433-a37d-30f63e1b8a4f -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00b26731-066f-4b69-96e8-3472fc6fbc09",
+     "name": "Barbell Racked Forward Lunge",
+     "reason": "injury",
+     "graph_path": "exercise:00b26731-066f-4b69-96e8-3472fc6fbc09 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00c7ac93-153e-4b96-be56-b4ca6b465369",
+     "name": "Barbell Step Up to Knee-Drive",
+     "reason": "injury",
+     "graph_path": "exercise:00c7ac93-153e-4b96-be56-b4ca6b465369 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01e33d9f-3607-49db-bd59-af7f61d77300",
+     "name": "Vertical Jump to Broad Jump",
+     "reason": "injury",
+     "graph_path": "exercise:01e33d9f-3607-49db-bd59-af7f61d77300 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01f5a2bb-ecf7-4168-92b3-35bd78592e26",
+     "name": "High Plank Bird Dog",
+     "reason": "injury",
+     "graph_path": "exercise:01f5a2bb-ecf7-4168-92b3-35bd78592e26 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0333b0cc-4b43-45d9-adff-505b349e53d9",
+     "name": "Sandbag Zercher Carry",
+     "reason": "injury",
+     "graph_path": "exercise:0333b0cc-4b43-45d9-adff-505b349e53d9 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:03ba2166-a5e6-4d0d-9110-ab5b73acdd50",
+     "name": "BOSU Step Over",
+     "reason": "injury",
+     "graph_path": "exercise:03ba2166-a5e6-4d0d-9110-ab5b73acdd50 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01bc9947-23e6-4dcf-bf66-6381a2c29700",
+     "name": "Jumping Jack",
+     "reason": "condition",
+     "graph_path": "exercise:01bc9947-23e6-4dcf-bf66-6381a2c29700 -follows-> condition:patellofemoral pain syndrome -contraindicated_for(exclude)-> movement_pattern:cardio - plyometric",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0a0b8a72-0bd4-41aa-9fac-e0b44356ca8f",
+     "name": "Horizontal Leg Press Calf Raises",
+     "reason": "equipment",
+     "graph_path": "exercise:0a0b8a72-0bd4-41aa-9fac-e0b44356ca8f -requires-> ['equipment:Horizontal Leg Press Machine'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:10336de1-5994-4074-aa52-9b1b28d845a3",
+     "name": "Jump Rope - Single-Leg",
+     "reason": "condition",
+     "graph_path": "exercise:10336de1-5994-4074-aa52-9b1b28d845a3 -follows-> condition:patellofemoral pain syndrome -contraindicated_for(exclude)-> movement_pattern:cardio - plyometric",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:11afb04e-9b3d-413f-a4cc-8c03a2fb5d93",
+     "name": "Lacrosse Ball Upper Back against Wall",
+     "reason": "equipment",
+     "graph_path": "exercise:11afb04e-9b3d-413f-a4cc-8c03a2fb5d93 -requires-> ['equipment:Lacrosse Ball', 'equipment:Wall'] \u2209 available",
+     "substitutes": [
+      "Standing Neck Circles"
+     ]
+    },
+    {
+     "node_id": "exercise:12573626-5760-4d71-8cb5-e255daaa0b42",
+     "name": "Single-Arm Chest-Supported Incline Row",
+     "reason": "equipment",
+     "graph_path": "exercise:12573626-5760-4d71-8cb5-e255daaa0b42 -requires-> ['equipment:Adjustable Bench - Incline'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:1abf5a3d-25ca-4ee8-89d9-d3d8c6a53691",
+     "name": "Machine - Chest-Supported Row",
+     "reason": "equipment",
+     "graph_path": "exercise:1abf5a3d-25ca-4ee8-89d9-d3d8c6a53691 -requires-> ['equipment:Chest Supported Row Machine'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:02d6478f-0579-480b-a188-8e719d4fda14",
+     "name": "Low Copenhagen Plank",
+     "reason": "injury",
+     "graph_path": "exercise:02d6478f-0579-480b-a188-8e719d4fda14 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:07772057-db56-4cfb-ae4b-f98f4cac6b9a",
+     "name": "Anchored Band Rotational Lift",
+     "reason": "equipment",
+     "graph_path": "exercise:07772057-db56-4cfb-ae4b-f98f4cac6b9a -requires-> ['equipment:Resistance Band - With Handles'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:1965072a-7e34-4d37-98f5-bde8cb6629a4",
+     "name": "Cow Pose",
+     "reason": "injury",
+     "graph_path": "exercise:1965072a-7e34-4d37-98f5-bde8cb6629a4 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:201032fe-3189-4c79-a69b-e67e2c7e9b81",
+     "name": "SkiErg",
+     "reason": "equipment",
+     "graph_path": "exercise:201032fe-3189-4c79-a69b-e67e2c7e9b81 -requires-> ['equipment:SkiErg'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0263d731-ceb6-41d0-b01f-88f0f177623b",
+     "name": "Standing Miniband Hip Flexion",
+     "reason": "injury",
+     "graph_path": "exercise:0263d731-ceb6-41d0-b01f-88f0f177623b -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    }
+   ],
+   "allowed_count": 10,
+   "down_ranked": []
+  },
+  "trace": [
+   {
+    "step": "resolve_concepts",
+    "ms": 1.01
+   },
+   {
+    "step": "safety_filter",
+    "ms": 0.96
+   },
+   {
+    "step": "compose_plan",
+    "ms": 0.0
+   }
+  ],
+  "error": null
+ },
+ "equipment": {
+  "prompt": "Upper-body push, no barbell, only dumbbells and kettlebell",
+  "plan": {
+   "warmup": [
+    {
+     "exercise": "exercise:0e3201e9-4394-4902-a717-f4ce544d98de",
+     "name": "Push-Up to Knee-Drive",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    }
+   ],
+   "main": [
+    {
+     "exercise": "exercise:1465f189-eb62-410d-a73e-590a84693dd0",
+     "name": "Dumbbell Neutral-Grip Bench Press",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    },
+    {
+     "exercise": "exercise:03258dbf-bc21-4495-bcae-ca627b3a0f20",
+     "name": "Alternating Dumbbell Overhead Press",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    },
+    {
+     "exercise": "exercise:0a2dc786-fb42-4571-9b26-f58cdeb2c70e",
+     "name": "Bodyweight Pike",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    },
+    {
+     "exercise": "exercise:12b80a72-6c2f-43f0-b3bd-6b11e14e3358",
+     "name": "Resistance Band Reverse Curl",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    }
+   ],
+   "cooldown": [
+    {
+     "exercise": "exercise:0aa65232-8367-4622-b0ef-37e31626ba65",
+     "name": "Bench-Lying Single-Arm Dumbbell Tricep Extension",
+     "sets": 3,
+     "reps": 10,
+     "duration_sec": null,
+     "rest_sec": 60
+    }
+   ]
+  },
+  "provenance": {
+   "resolved_concepts": [
+    {
+     "query": "push no barbell",
+     "node_id": "equipment:Barbell",
+     "method": "fuzzy",
+     "confidence": 0.9,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    },
+    {
+     "query": "no barbell only",
+     "node_id": "equipment:Barbell",
+     "method": "fuzzy",
+     "confidence": 0.9,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    },
+    {
+     "query": "barbell only dumbbells",
+     "node_id": "equipment:Barbell",
+     "method": "fuzzy",
+     "confidence": 0.9,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    },
+    {
+     "query": "only dumbbells and",
+     "node_id": "equipment:Dumbbell",
+     "method": "fuzzy",
+     "confidence": 0.9,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    },
+    {
+     "query": "dumbbells and kettlebell",
+     "node_id": "equipment:Dumbbell",
+     "method": "fuzzy",
+     "confidence": 0.9,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    },
+    {
+     "query": "upper-body push",
+     "node_id": "movement_pattern:lower push - calf raise",
+     "method": "fuzzy",
+     "confidence": 0.855,
+     "passes_tried": [
+      "exact",
+      "fuzzy"
+     ]
+    }
+   ],
+   "unresolved": [],
+   "removed": [
+    {
+     "node_id": "exercise:0b3178cf-bf89-45a3-bfb0-27310ef6ef38",
+     "name": "Barbell Decline Bench Press",
+     "reason": "explicit_exclusion",
+     "graph_path": "coach said exclude \"barbell\"",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0fa0eb42-797f-4752-9a80-68e2dfb2a935",
+     "name": "Alternating Dumbbell Decline Bench Press",
+     "reason": "equipment",
+     "graph_path": "exercise:0fa0eb42-797f-4752-9a80-68e2dfb2a935 -requires-> ['equipment:Adjustable Bench - Decline'] \u2209 available",
+     "substitutes": [
+      "Dumbbell Neutral-Grip Bench Press",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:13261989-7436-44d0-8daf-754b259e5af8",
+     "name": "Dumbbell Incline Chest Fly",
+     "reason": "equipment",
+     "graph_path": "exercise:13261989-7436-44d0-8daf-754b259e5af8 -requires-> ['equipment:Adjustable Bench - Incline'] \u2209 available",
+     "substitutes": [
+      "Dumbbell Neutral-Grip Bench Press",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:0a5efec6-b142-4a20-8c6d-5829ddc248af",
+     "name": "Isometric Pull-Up",
+     "reason": "equipment",
+     "graph_path": "exercise:0a5efec6-b142-4a20-8c6d-5829ddc248af -requires-> ['equipment:Pull-Up Bar'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0b6fcb1c-aa47-455b-8a9f-f9d1582745df",
+     "name": "Band-Assisted Chin-Up (From Foot)",
+     "reason": "equipment",
+     "graph_path": "exercise:0b6fcb1c-aa47-455b-8a9f-f9d1582745df -requires-> ['equipment:Pull-Up Bar'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0fb071d6-2ca0-46ac-a855-83a0029b2ccc",
+     "name": "Machine - Single-Arm Lat Pull-Down",
+     "reason": "equipment",
+     "graph_path": "exercise:0fb071d6-2ca0-46ac-a855-83a0029b2ccc -requires-> ['equipment:Seated Lat Pulldown Machine'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:12918da8-e735-45e3-9185-8f6c074397a3",
+     "name": "Kneeling Stability Ball Lat Stretch",
+     "reason": "injury",
+     "graph_path": "exercise:12918da8-e735-45e3-9185-8f6c074397a3 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01128a8f-44a4-43ae-a172-b6a32b2e8534",
+     "name": "Med Ball Scoop Toss",
+     "reason": "injury",
+     "graph_path": "exercise:01128a8f-44a4-43ae-a172-b6a32b2e8534 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0b1250ab-ac21-42a3-8aff-87f75e85eea0",
+     "name": "Bench-Supported Incline YTI",
+     "reason": "equipment",
+     "graph_path": "exercise:0b1250ab-ac21-42a3-8aff-87f75e85eea0 -requires-> ['equipment:Adjustable Bench - Incline'] \u2209 available",
+     "substitutes": [
+      "Standing Neck Circles",
+      "Walking Toe Touches"
+     ]
+    },
+    {
+     "node_id": "exercise:004717c7-4e34-4a26-978f-50106f09abcc",
+     "name": "Wide-Grip Preacher Curl with EZ Bar",
+     "reason": "equipment",
+     "graph_path": "exercise:004717c7-4e34-4a26-978f-50106f09abcc -requires-> ['equipment:EZ Bar', 'equipment:Preacher Curl Bench'] \u2209 available",
+     "substitutes": [
+      "Resistance Band Reverse Curl"
+     ]
+    },
+    {
+     "node_id": "exercise:14a8ad1b-09c9-4572-860c-9d6b231a3a72",
+     "name": "Single-Arm Dumbbell Preacher Curl",
+     "reason": "equipment",
+     "graph_path": "exercise:14a8ad1b-09c9-4572-860c-9d6b231a3a72 -requires-> ['equipment:Preacher Curl Bench'] \u2209 available",
+     "substitutes": [
+      "Resistance Band Reverse Curl"
+     ]
+    },
+    {
+     "node_id": "exercise:12fe4a7f-cdf9-411e-9272-868a74debfeb",
+     "name": "Single-Arm Cable Tricep Extension",
+     "reason": "equipment",
+     "graph_path": "exercise:12fe4a7f-cdf9-411e-9272-868a74debfeb -requires-> ['equipment:Cable Resistance Machine', 'equipment:Handle Attachment'] \u2209 available",
+     "substitutes": [
+      "Bench-Lying Single-Arm Dumbbell Tricep Extension"
+     ]
+    },
+    {
+     "node_id": "exercise:297668c1-4006-4280-8208-ea3cd99d3264",
+     "name": "Suspension Tricep Press",
+     "reason": "equipment",
+     "graph_path": "exercise:297668c1-4006-4280-8208-ea3cd99d3264 -requires-> ['equipment:Suspension Trainer'] \u2209 available",
+     "substitutes": [
+      "Bench-Lying Single-Arm Dumbbell Tricep Extension",
+      "Push-Up to Knee-Drive"
+     ]
+    },
+    {
+     "node_id": "exercise:00036a08-7c22-42e4-8fe5-323b53e31667",
+     "name": "Kettlebell Goblet Cyclist Squat",
+     "reason": "injury",
+     "graph_path": "exercise:00036a08-7c22-42e4-8fe5-323b53e31667 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00cc383b-f156-4b23-952a-15340100c261",
+     "name": "RNT Split Squat",
+     "reason": "injury",
+     "graph_path": "exercise:00cc383b-f156-4b23-952a-15340100c261 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01ff62bc-e887-49e4-9cc8-bcd367b34cfd",
+     "name": "Static Jump",
+     "reason": "injury",
+     "graph_path": "exercise:01ff62bc-e887-49e4-9cc8-bcd367b34cfd -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0252c3c1-435f-49a2-9f79-5ef53eec3b1b",
+     "name": "Med Ball Split Squat",
+     "reason": "injury",
+     "graph_path": "exercise:0252c3c1-435f-49a2-9f79-5ef53eec3b1b -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:02fe4cf5-bb21-4bef-868f-fea1477e2a53",
+     "name": "Dumbbell Goblet Split Squat",
+     "reason": "injury",
+     "graph_path": "exercise:02fe4cf5-bb21-4bef-868f-fea1477e2a53 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0732c6eb-2275-4af3-8276-9bb8be2aa12d",
+     "name": "One-Kettlebell Hamstring Walkout",
+     "reason": "injury",
+     "graph_path": "exercise:0732c6eb-2275-4af3-8276-9bb8be2aa12d -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0a4d99cf-5075-468e-9551-b9f8efa267f1",
+     "name": "World's Greatest Stretch",
+     "reason": "injury",
+     "graph_path": "exercise:0a4d99cf-5075-468e-9551-b9f8efa267f1 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:2248e07a-93de-4da1-ad20-aff27537a99a",
+     "name": "Med Ball Hamstring Walkout",
+     "reason": "injury",
+     "graph_path": "exercise:2248e07a-93de-4da1-ad20-aff27537a99a -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00678525-7d38-4a9e-8998-a299a209c724",
+     "name": "Alternating Dumbbell Racked Crossback Lunge",
+     "reason": "injury",
+     "graph_path": "exercise:00678525-7d38-4a9e-8998-a299a209c724 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00a510b1-4676-4433-a37d-30f63e1b8a4f",
+     "name": "Stair Climber",
+     "reason": "injury",
+     "graph_path": "exercise:00a510b1-4676-4433-a37d-30f63e1b8a4f -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00b26731-066f-4b69-96e8-3472fc6fbc09",
+     "name": "Barbell Racked Forward Lunge",
+     "reason": "explicit_exclusion",
+     "graph_path": "coach said exclude \"barbell\"",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:00c7ac93-153e-4b96-be56-b4ca6b465369",
+     "name": "Barbell Step Up to Knee-Drive",
+     "reason": "explicit_exclusion",
+     "graph_path": "coach said exclude \"barbell\"",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01e33d9f-3607-49db-bd59-af7f61d77300",
+     "name": "Vertical Jump to Broad Jump",
+     "reason": "injury",
+     "graph_path": "exercise:01e33d9f-3607-49db-bd59-af7f61d77300 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01f5a2bb-ecf7-4168-92b3-35bd78592e26",
+     "name": "High Plank Bird Dog",
+     "reason": "injury",
+     "graph_path": "exercise:01f5a2bb-ecf7-4168-92b3-35bd78592e26 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0333b0cc-4b43-45d9-adff-505b349e53d9",
+     "name": "Sandbag Zercher Carry",
+     "reason": "injury",
+     "graph_path": "exercise:0333b0cc-4b43-45d9-adff-505b349e53d9 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:03ba2166-a5e6-4d0d-9110-ab5b73acdd50",
+     "name": "BOSU Step Over",
+     "reason": "injury",
+     "graph_path": "exercise:03ba2166-a5e6-4d0d-9110-ab5b73acdd50 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:01bc9947-23e6-4dcf-bf66-6381a2c29700",
+     "name": "Jumping Jack",
+     "reason": "condition",
+     "graph_path": "exercise:01bc9947-23e6-4dcf-bf66-6381a2c29700 -follows-> condition:patellofemoral pain syndrome -contraindicated_for(exclude)-> movement_pattern:cardio - plyometric",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0a0b8a72-0bd4-41aa-9fac-e0b44356ca8f",
+     "name": "Horizontal Leg Press Calf Raises",
+     "reason": "equipment",
+     "graph_path": "exercise:0a0b8a72-0bd4-41aa-9fac-e0b44356ca8f -requires-> ['equipment:Horizontal Leg Press Machine'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:10336de1-5994-4074-aa52-9b1b28d845a3",
+     "name": "Jump Rope - Single-Leg",
+     "reason": "condition",
+     "graph_path": "exercise:10336de1-5994-4074-aa52-9b1b28d845a3 -follows-> condition:patellofemoral pain syndrome -contraindicated_for(exclude)-> movement_pattern:cardio - plyometric",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:11afb04e-9b3d-413f-a4cc-8c03a2fb5d93",
+     "name": "Lacrosse Ball Upper Back against Wall",
+     "reason": "equipment",
+     "graph_path": "exercise:11afb04e-9b3d-413f-a4cc-8c03a2fb5d93 -requires-> ['equipment:Lacrosse Ball', 'equipment:Wall'] \u2209 available",
+     "substitutes": [
+      "Standing Neck Circles"
+     ]
+    },
+    {
+     "node_id": "exercise:12573626-5760-4d71-8cb5-e255daaa0b42",
+     "name": "Single-Arm Chest-Supported Incline Row",
+     "reason": "equipment",
+     "graph_path": "exercise:12573626-5760-4d71-8cb5-e255daaa0b42 -requires-> ['equipment:Adjustable Bench - Incline'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:1abf5a3d-25ca-4ee8-89d9-d3d8c6a53691",
+     "name": "Machine - Chest-Supported Row",
+     "reason": "equipment",
+     "graph_path": "exercise:1abf5a3d-25ca-4ee8-89d9-d3d8c6a53691 -requires-> ['equipment:Chest Supported Row Machine'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:02d6478f-0579-480b-a188-8e719d4fda14",
+     "name": "Low Copenhagen Plank",
+     "reason": "injury",
+     "graph_path": "exercise:02d6478f-0579-480b-a188-8e719d4fda14 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:07772057-db56-4cfb-ae4b-f98f4cac6b9a",
+     "name": "Anchored Band Rotational Lift",
+     "reason": "equipment",
+     "graph_path": "exercise:07772057-db56-4cfb-ae4b-f98f4cac6b9a -requires-> ['equipment:Resistance Band - With Handles'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:1965072a-7e34-4d37-98f5-bde8cb6629a4",
+     "name": "Cow Pose",
+     "reason": "injury",
+     "graph_path": "exercise:1965072a-7e34-4d37-98f5-bde8cb6629a4 -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:201032fe-3189-4c79-a69b-e67e2c7e9b81",
+     "name": "SkiErg",
+     "reason": "equipment",
+     "graph_path": "exercise:201032fe-3189-4c79-a69b-e67e2c7e9b81 -requires-> ['equipment:SkiErg'] \u2209 available",
+     "substitutes": []
+    },
+    {
+     "node_id": "exercise:0263d731-ceb6-41d0-b01f-88f0f177623b",
+     "name": "Standing Miniband Hip Flexion",
+     "reason": "injury",
+     "graph_path": "exercise:0263d731-ceb6-41d0-b01f-88f0f177623b -stresses-> joint:knee (injured: joint:knee)",
+     "substitutes": []
+    }
+   ],
+   "allowed_count": 10,
+   "down_ranked": []
+  },
+  "trace": [
+   {
+    "step": "resolve_concepts",
+    "ms": 0.74
+   },
+   {
+    "step": "safety_filter",
+    "ms": 0.91
+   },
+   {
+    "step": "compose_plan",
+    "ms": 0.0
+   }
+  ],
+  "error": null
+ }
+}

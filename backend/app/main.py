@@ -1,9 +1,13 @@
 """FastAPI shell — phase 1. Routes grow per phase; contracts stay typed."""
 
+import os
+from pathlib import Path
+
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from app.data_loader import load_exercises, load_member_context
@@ -15,9 +19,12 @@ load_dotenv()
 
 app = FastAPI(title="Coach Dashboard API")
 
+# Same-origin in production (FastAPI serves the SPA), so CORS is only needed for
+# the Vite dev server. Override via ALLOWED_ORIGINS (comma-separated) if needed.
+_allowed_origins = os.environ.get("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[o.strip() for o in _allowed_origins if o.strip()],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -118,3 +125,27 @@ def generate(req: GenerateRequest) -> GenerationResult:
     return generate_workout(
         req.prompt, req.minutes, llm=anthropic_compose, use_member_context=req.use_member_context
     )
+
+
+# --- Serve the built frontend (single-service deploy) -----------------------
+# In production FastAPI serves the React build so the SPA and API share one
+# origin (relative /api/* paths just work, no CORS). In local dev this block is
+# skipped — the dist dir doesn't exist and Vite serves the frontend instead.
+# FRONTEND_DIST lets the Dockerfile point at an absolute path regardless of how
+# the `app` package is installed.
+_dist = os.environ.get("FRONTEND_DIST")
+_FRONTEND_DIST = Path(_dist) if _dist else Path(__file__).resolve().parents[2] / "frontend" / "dist"
+
+if _FRONTEND_DIST.is_dir():
+    app.mount("/assets", StaticFiles(directory=_FRONTEND_DIST / "assets"), name="assets")
+
+    @app.get("/{full_path:path}")
+    def spa_fallback(full_path: str) -> FileResponse:
+        """Serve real files when they exist; otherwise hand back index.html so
+        client-side routing works. /api/* never reaches here (matched above)."""
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Not found")
+        candidate = _FRONTEND_DIST / full_path
+        if full_path and candidate.is_file():
+            return FileResponse(candidate)
+        return FileResponse(_FRONTEND_DIST / "index.html")

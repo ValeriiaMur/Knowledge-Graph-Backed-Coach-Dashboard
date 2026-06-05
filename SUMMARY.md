@@ -3,7 +3,7 @@
 > Single source of truth for status, decisions, and plan. Update on every working session.
 > Spec: [ASSESSMENT.md](./ASSESSMENT.md) · Scoping: [PRESEARCH.md](./PRESEARCH.md) · Diagram: [system-design.svg](./system-design.svg) · Rules: [AGENT_RULES.md](./AGENT_RULES.md)
 
-**Last updated:** 2026-06-04 · **Status:** phase 6 complete, phase 7 (README + examples) next
+**Last updated:** 2026-06-05 · **Status:** all 7 phases complete — README shipped, design-system UI live, token streaming in
 
 ---
 
@@ -34,7 +34,7 @@ Coach-facing dashboard for Future's take-home: (A) a workout generator driven by
 | 4 | Agentic runtime | Tool-use loop, plan composer, provenance trace | 2h | ✅ |
 | 5 | Copilot | Retrieval over KG 2, quick prompts, charts, chat history | 2h | ✅ |
 | 6 | UI polish + nice-to-haves | Graph viz, streaming, trace view, eval script | 2h | ✅ (streaming deferred — see Open questions) |
-| 7 | README + examples | Diagram, trade-offs, 3 worked examples, runthrough test | 1.5h | ☐ |
+| 7 | README + examples | Diagram, trade-offs, 3 worked examples, runthrough test | 1.5h | ✅ |
 
 Critical path: phases 2–3 — everything downstream consumes the graphs and the safety filter, and they carry the heaviest evaluation weight.
 
@@ -47,9 +47,13 @@ Critical path: phases 2–3 — everything downstream consumes the graphs and th
 
 ## Open questions
 
-- Token-level streaming (SSE from Anthropic stream API) deferred from phase 6 — chart prompts already render instantly without an LLM round-trip, so perceived latency is good. Decide in phase 7 whether to add it or document as a trade-off.
+- ~~Token-level streaming deferred from phase 6~~ → **Resolved 2026-06-05:** implemented for copilot chat (SSE `token`/`tool`/`done` events, injectable stream LLM, 5 new tests, non-streaming client fallback). Generation intentionally stays atomic — plans are validated before display.
 
 ## Changelog
+
+- **2026-06-05** — Phase 7 done: README.md (quickstart, architecture, why-this-tech rationale, scaling table, 3 worked examples from real pipeline output in docs/worked-examples.json, trade-offs incl. honest resolver false-positive + no-deadlifts-in-catalog notes). Token streaming shipped (backend `run_copilot_stream` + `/api/copilot/chat/stream`, frontend SSE consumer). Graph node detail popover: `/api/graph` now returns full node attrs (SNOMED SKOS mappings, priority tier, bilateral) + edge `mode`; floating DS card shows attrs and grouped relations with click-to-jump. 61 backend tests green, eval 15/15 + 3/3, both lints clean, vite build passes.
+
+- **2026-06-05** — Design-system UI session: Future DS handoff (future-ds.css, dashboard.css, dash-*.jsx) ported 1:1 into the frontend as the app shell. Designed dashboard grid fully wired to real data via pure derivations (src/derive.ts) — stat pills (adherence/HRV/sleep/RHR), KPIs and progress bars from workout history, timer from preferred session minutes, accordions (equipment/injuries/goals/prefs), calendar from history + preferred days + brief, session card shows generated plan (state lifted to App) with history fallback. Generator/Copilot/Graph/Login redesigned with DS primitives as nav tabs. MemberHeader + old index.css removed (replaced by Hero/ProfileCard). SSR smoke-test against real member-context.json; tsc/eslint/prettier/build green.
 
 - **2026-06-04** — Phase 6 done: eval pipeline (`make eval`: resolver 15/15, safety 3/3); /api/graph endpoint (161 nodes, 424 links); full dashboard UI — 11 components, one per file (LoginGate mock auth, MemberHeader badges, BriefCard, GeneratorPanel→PlanView+ProvenanceTrace w/ graph paths + pipeline timings, CopilotPanel w/ member chat history + grounded tool-call labels, QuickPrompts, TrendChart SVG, GraphView radial KG viz w/ click-to-highlight edges). Chart prompts render deterministically from timeseries endpoints (no LLM). tsc, eslint, prettier clean; vite build passes. Token streaming deferred.
 
