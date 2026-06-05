@@ -291,11 +291,80 @@
 .graph-card svg {
   display: block;
 }
+.graph-stage {
+  position: relative;
+}
 .legend-row {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
   margin-top: 12px;
+}
+
+/* floating node-detail card */
+.node-pop {
+  position: absolute;
+  width: 320px;
+  max-width: 46%;
+  padding: 16px 18px;
+  box-shadow: var(--shadow-pop);
+  z-index: 5;
+}
+.node-pop-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.node-pop-head .nm {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+.node-pop-head .expand {
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  line-height: 1;
+  flex: none;
+}
+.node-pop-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.node-pop-sec {
+  margin-top: 12px;
+}
+.node-pop-sec .eyebrow {
+  display: block;
+  margin: 10px 0 6px;
+}
+.node-pop-map {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.node-pop-map .lbl {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.node-pop-scroll {
+  max-height: 220px;
+  overflow-y: auto;
+}
+.node-pop-chips {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.node-pop-chips .pill {
+  padding: 5px 11px;
+  font-size: 12px;
 }
 
 /* ---------- misc ---------- */

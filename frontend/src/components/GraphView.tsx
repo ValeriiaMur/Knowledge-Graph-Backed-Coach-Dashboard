@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { api } from "../api";
 import type { GraphData } from "../types";
+import { GraphNodePopover } from "./GraphNodePopover";
 
 /** Node palette drawn from the design system's accent variants so the
  * graph reads as part of the same family. */
@@ -64,6 +65,8 @@ export function GraphView(): JSX.Element {
   const visibleLinks = selected
     ? data.links.filter((l) => l.source === selected || l.target === selected)
     : [];
+  const selectedNode = selected ? (data.nodes.find((n) => n.id === selected) ?? null) : null;
+  const selectedPos = selected ? (layout.get(selected) ?? null) : null;
 
   return (
     <div className="c c-pad graph-card rise">
@@ -74,49 +77,61 @@ export function GraphView(): JSX.Element {
           {selected ? ` · ${selected}` : " · click a node"}
         </span>
       </div>
-      <svg viewBox="0 0 900 560" width="100%">
-        {visibleLinks.map((l, i) => {
-          const a = layout.get(l.source);
-          const b = layout.get(l.target);
-          if (!a || !b) return null;
-          return (
-            <g key={`${l.source}-${l.target}-${i}`}>
-              <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="var(--ink)" strokeWidth="1.2" />
-              <text
-                x={(a.x + b.x) / 2}
-                y={(a.y + b.y) / 2}
-                fontSize="7"
-                fill="var(--ink-2)"
-                textAnchor="middle"
+      <div className="graph-stage">
+        <svg viewBox="0 0 900 560" width="100%">
+          {visibleLinks.map((l, i) => {
+            const a = layout.get(l.source);
+            const b = layout.get(l.target);
+            if (!a || !b) return null;
+            return (
+              <g key={`${l.source}-${l.target}-${i}`}>
+                <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="var(--ink)" strokeWidth="1.2" />
+                <text
+                  x={(a.x + b.x) / 2}
+                  y={(a.y + b.y) / 2}
+                  fontSize="7"
+                  fill="var(--ink-2)"
+                  textAnchor="middle"
+                >
+                  {l.rel}
+                </text>
+              </g>
+            );
+          })}
+          {data.nodes.map((n) => {
+            const p = layout.get(n.id);
+            if (!p) return null;
+            const active = selected === n.id;
+            return (
+              <circle
+                key={n.id}
+                cx={p.x}
+                cy={p.y}
+                r={active ? 7 : 4}
+                fill={KIND_COLORS[n.kind] ?? "#9c978c"}
+                stroke={active ? "var(--ink)" : "var(--card)"}
+                strokeWidth="1"
+                style={{ cursor: "pointer" }}
+                onClick={() => setSelected(active ? null : n.id)}
               >
-                {l.rel}
-              </text>
-            </g>
-          );
-        })}
-        {data.nodes.map((n) => {
-          const p = layout.get(n.id);
-          if (!p) return null;
-          const active = selected === n.id;
-          return (
-            <circle
-              key={n.id}
-              cx={p.x}
-              cy={p.y}
-              r={active ? 7 : 4}
-              fill={KIND_COLORS[n.kind] ?? "#9c978c"}
-              stroke={active ? "var(--ink)" : "var(--card)"}
-              strokeWidth="1"
-              style={{ cursor: "pointer" }}
-              onClick={() => setSelected(active ? null : n.id)}
-            >
-              <title>
-                {n.kind}: {n.name}
-              </title>
-            </circle>
-          );
-        })}
-      </svg>
+                <title>
+                  {n.kind}: {n.name}
+                </title>
+              </circle>
+            );
+          })}
+        </svg>
+        {selectedNode && selectedPos && (
+          <GraphNodePopover
+            node={selectedNode}
+            data={data}
+            x={selectedPos.x / 900}
+            y={selectedPos.y / 560}
+            onClose={() => setSelected(null)}
+            onJump={(id) => setSelected(id)}
+          />
+        )}
+      </div>
       <div className="legend-row">
         {Object.entries(KIND_COLORS).map(([kind, color]) => (
           <span key={kind} className="tag" style={{ background: color, color: "#201f1c" }}>

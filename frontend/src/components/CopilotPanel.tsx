@@ -73,22 +73,32 @@ export function CopilotPanel(): JSX.Element {
       return;
     }
 
+    // token-level streaming (SSE), with a non-streaming fallback
     setBusy(true);
+    const aiId = nextId++;
+    setMessages((m) => [...m, { id: aiId, from: "ai", text: "" }]);
+    const patch = (update: (msg: Message) => Message): void => {
+      setMessages((m) => m.map((msg) => (msg.id === aiId ? update(msg) : msg)));
+    };
     try {
-      const reply = await api.chat(text, "coach-session");
-      setMessages((m) => [
-        ...m,
-        { id: nextId++, from: "ai", text: reply.reply, toolCalls: reply.tool_calls },
-      ]);
-    } catch (e) {
-      setMessages((m) => [
-        ...m,
-        {
-          id: nextId++,
-          from: "ai",
+      await api.chatStream(text, "coach-session", (ev) => {
+        if (ev.type === "token") patch((msg) => ({ ...msg, text: msg.text + ev.text }));
+        else if (ev.type === "tool")
+          patch((msg) => ({ ...msg, toolCalls: [...(msg.toolCalls ?? []), ev.name] }));
+        else if (ev.type === "done")
+          patch((msg) => ({ ...msg, text: ev.reply, toolCalls: ev.tool_calls }));
+        else if (ev.type === "error") throw new Error(ev.error);
+      });
+    } catch {
+      try {
+        const reply = await api.chat(text, "coach-session");
+        patch((msg) => ({ ...msg, text: reply.reply, toolCalls: reply.tool_calls }));
+      } catch (e) {
+        patch((msg) => ({
+          ...msg,
           text: `Copilot unavailable: ${e instanceof Error ? e.message : "error"}. Is ANTHROPIC_API_KEY set?`,
-        },
-      ]);
+        }));
+      }
     } finally {
       setBusy(false);
     }
@@ -105,7 +115,6 @@ export function CopilotPanel(): JSX.Element {
         {messages.map((m) => (
           <ChatBubble key={m.id} msg={m} />
         ))}
-        {busy && <div className="bubble bubble-ai">…</div>}
       </div>
       <div className="chat-input">
         <input

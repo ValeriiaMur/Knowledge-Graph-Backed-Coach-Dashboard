@@ -118,6 +118,28 @@ export type MemberProfile = {
 
 export type ChatHistoryItem = { ts: string; from: string; text: string };
 
-export type GraphNode = { id: string; kind: string; name: string };
-export type GraphLink = { source: string; target: string; rel: string };
+export type SkosMapping = {
+  scheme: string;
+  code: string | null;
+  label: string;
+  match: string;
+  verified: boolean;
+};
+export type GraphNode = {
+  id: string;
+  kind: string;
+  name: string;
+  skos_mappings?: SkosMapping[];
+  priority_tier?: number;
+  is_bilateral?: boolean;
+  side?: string | null;
+};
+export type GraphLink = { source: string; target: string; rel: string; mode?: string };
 export type GraphData = { nodes: GraphNode[]; links: GraphLink[] };
+
+/** Copilot SSE stream events (mirrors backend agent.run_copilot_stream). */
+export type StreamEvent =
+  | { type: "token"; text: string }
+  | { type: "tool"; name: string }
+  | { type: "done"; reply: string; tool_calls: string[] }
+  | { type: "error"; error: string };

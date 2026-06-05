@@ -17,7 +17,7 @@ export function ChatBubble({ msg }: Props): JSX.Element {
   return (
     <div className={cls}>
       {msg.from === "member" && <div className="bubble-meta">member · {msg.ts}</div>}
-      {msg.text}
+      {msg.text || "…"}
       {msg.chart && <TrendChart series={msg.chart} />}
       {msg.toolCalls && msg.toolCalls.length > 0 && (
         <div className="bubble-meta">grounded via: {msg.toolCalls.join(", ")}</div>
