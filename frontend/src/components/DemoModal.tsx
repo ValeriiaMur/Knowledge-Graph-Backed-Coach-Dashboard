@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Props = { open: boolean; onClose: () => void; context?: string };
 
@@ -33,7 +34,9 @@ export function DemoModal({ open, onClose, context }: Props): JSX.Element | null
     setAccent(name);
   };
 
-  return (
+  // Portaled to <body> so the fixed overlay centers against the viewport — a
+  // transformed ancestor (card animations) would otherwise trap position:fixed.
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div
         className="card modal-card rise"
@@ -69,6 +72,7 @@ export function DemoModal({ open, onClose, context }: Props): JSX.Element | null
           Back to the demo
         </button>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

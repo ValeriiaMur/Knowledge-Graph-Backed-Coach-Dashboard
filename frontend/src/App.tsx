@@ -5,6 +5,7 @@ import { AccordionCard } from "./components/AccordionCard";
 import { BriefCard } from "./components/BriefCard";
 import { CalendarCard } from "./components/CalendarCard";
 import { CopilotPanel } from "./components/CopilotPanel";
+import { DemoModal } from "./components/DemoModal";
 import { GeneratorPanel } from "./components/GeneratorPanel";
 import { GraphView } from "./components/GraphView";
 import { Hero } from "./components/Hero";
@@ -22,6 +23,7 @@ export function App(): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<NavTab>("Dashboard");
   const [generation, setGeneration] = useState<GenerationResult | null>(null);
+  const [demoCtx, setDemoCtx] = useState<string | null>(null);
   const now = useMemo(() => new Date(), []);
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export function App(): JSX.Element {
   return (
     <div className="stage">
       <div className="panel">
-        <TopNav active={tab} onSelect={setTab} coach={coach} />
+        <TopNav active={tab} onSelect={setTab} coach={coach} onDemo={setDemoCtx} />
         {error && <p className="error-text">{error}</p>}
         {!member && !error && <p className="center-note">Loading member…</p>}
         {member && tab === "Dashboard" && (
@@ -45,7 +47,7 @@ export function App(): JSX.Element {
             <Hero member={member} />
             <div className="grid">
               <ProfileCard member={member} now={now} />
-              <AccordionCard member={member} />
+              <AccordionCard member={member} onDemo={setDemoCtx} />
               <ProgressCard history={member.workout_history} now={now} />
               <TimerCard targetMinutes={member.preferences.preferred_session_minutes} />
               <CalendarCard member={member} now={now} />
@@ -76,6 +78,11 @@ export function App(): JSX.Element {
         )}
         {member && tab === "Graph" && <GraphView />}
       </div>
+      <DemoModal
+        open={demoCtx !== null}
+        onClose={() => setDemoCtx(null)}
+        {...(demoCtx !== null ? { context: demoCtx } : {})}
+      />
     </div>
   );
 }

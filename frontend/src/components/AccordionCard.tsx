@@ -1,16 +1,13 @@
-import { useState } from "react";
 import { buildAccordions } from "../derive";
 import { Icons, iconByName } from "../icons";
 import type { MemberProfile } from "../types";
-import { DemoModal } from "./DemoModal";
 
-type Props = { member: MemberProfile };
+type Props = { member: MemberProfile; onDemo: (context: string) => void };
 
 /** Member-context sections (equipment / injuries / goals / preferences) —
  * always open; everything shown comes from /api/member. */
-export function AccordionCard({ member }: Props): JSX.Element {
+export function AccordionCard({ member, onDemo }: Props): JSX.Element {
   const sections = buildAccordions(member);
-  const [modalFor, setModalFor] = useState<string | null>(null);
   return (
     <div className="c c-pad g-accord rise" style={{ animationDelay: ".1s" }}>
       {sections.map((a) => (
@@ -33,7 +30,7 @@ export function AccordionCard({ member }: Props): JSX.Element {
                   <button
                     className="gear-dots"
                     aria-label={`Actions for ${g.nm}`}
-                    onClick={() => setModalFor(g.nm)}
+                    onClick={() => onDemo(g.nm)}
                   >
                     <Icons.dots size={18} />
                   </button>
@@ -43,11 +40,6 @@ export function AccordionCard({ member }: Props): JSX.Element {
           </div>
         </div>
       ))}
-      <DemoModal
-        open={modalFor !== null}
-        onClose={() => setModalFor(null)}
-        {...(modalFor !== null ? { context: modalFor } : {})}
-      />
     </div>
   );
 }
