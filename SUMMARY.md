@@ -3,7 +3,7 @@
 > Single source of truth for status, decisions, and plan. Update on every working session.
 > Spec: [ASSESSMENT.md](./ASSESSMENT.md) · Scoping: [PRESEARCH.md](./PRESEARCH.md) · Diagram: [system-design.svg](./system-design.svg) · Rules: [AGENT_RULES.md](./AGENT_RULES.md)
 
-**Last updated:** 2026-06-04 · **Status:** phase 5 complete, phase 6 (UI + nice-to-haves) next
+**Last updated:** 2026-06-04 · **Status:** phase 6 complete, phase 7 (README + examples) next
 
 ---
 
@@ -33,7 +33,7 @@ Coach-facing dashboard for Future's take-home: (A) a workout generator driven by
 | 3 | Resolver + safety filter | 3-pass resolver with thresholds, traversal filter, pytest both | 2h | ✅ |
 | 4 | Agentic runtime | Tool-use loop, plan composer, provenance trace | 2h | ✅ |
 | 5 | Copilot | Retrieval over KG 2, quick prompts, charts, chat history | 2h | ✅ |
-| 6 | UI polish + nice-to-haves | Graph viz, streaming, trace view, eval script | 2h | ☐ |
+| 6 | UI polish + nice-to-haves | Graph viz, streaming, trace view, eval script | 2h | ✅ (streaming deferred — see Open questions) |
 | 7 | README + examples | Diagram, trade-offs, 3 worked examples, runthrough test | 1.5h | ☐ |
 
 Critical path: phases 2–3 — everything downstream consumes the graphs and the safety filter, and they carry the heaviest evaluation weight.
@@ -47,9 +47,11 @@ Critical path: phases 2–3 — everything downstream consumes the graphs and th
 
 ## Open questions
 
-- (none — resolved during pre-search; add new ones here as they come up)
+- Token-level streaming (SSE from Anthropic stream API) deferred from phase 6 — chart prompts already render instantly without an LLM round-trip, so perceived latency is good. Decide in phase 7 whether to add it or document as a trade-off.
 
 ## Changelog
+
+- **2026-06-04** — Phase 6 done: eval pipeline (`make eval`: resolver 15/15, safety 3/3); /api/graph endpoint (161 nodes, 424 links); full dashboard UI — 11 components, one per file (LoginGate mock auth, MemberHeader badges, BriefCard, GeneratorPanel→PlanView+ProvenanceTrace w/ graph paths + pipeline timings, CopilotPanel w/ member chat history + grounded tool-call labels, QuickPrompts, TrendChart SVG, GraphView radial KG viz w/ click-to-highlight edges). Chart prompts render deterministically from timeseries endpoints (no LLM). tsc, eslint, prettier clean; vite build passes. Token streaming deferred.
 
 - **2026-06-04** — Phase 5 done: copilot — 13 grounded retrieval tools over KG 2 (brief, adherence, churn, sleep, biomarkers, labs, injuries, goals, prefs, chats, workouts, what-changed, timeseries w/ honest unknown-metric error); agent tool-use loop (injectable LLM, session history, unknown-tool resilience, iteration cap); Anthropic adapter; endpoints /api/copilot/chat, /quick-prompts, /chat-history, /api/member/timeseries/{metric}. 54 tests green, lint clean, endpoints verified live.
 

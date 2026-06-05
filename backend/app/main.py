@@ -37,6 +37,17 @@ def member() -> MemberContext:
     return load_member_context()
 
 
+@app.get("/api/graph")
+def graph_data() -> dict:
+    """KG 1 nodes + links for the visualization panel."""
+    from app.graph.movement_kg import build_movement_graph
+
+    g = build_movement_graph()
+    nodes = [{"id": n, "kind": d["kind"], "name": d["name"]} for n, d in g.nodes(data=True)]
+    links = [{"source": u, "target": v, "rel": d["rel"]} for u, v, d in g.edges(data=True)]
+    return {"nodes": nodes, "links": links}
+
+
 class ChatRequest(BaseModel):
     message: str
     session_id: str = "default"
