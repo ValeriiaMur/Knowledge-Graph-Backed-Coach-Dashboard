@@ -28,6 +28,11 @@ COPY data/ /app/data/
 # (data_loader's DATA_DIR) resolve against /app/backend, not site-packages.
 ENV PYTHONPATH=/app/backend
 ENV PYTHONUNBUFFERED=1
+
+# Drop root: run the app as an unprivileged user.
+RUN adduser --system --no-create-home appuser && chown -R appuser /app
+USER appuser
+
 EXPOSE 8000
 
 # Railway injects $PORT; fall back to 8000 for local `docker run`.

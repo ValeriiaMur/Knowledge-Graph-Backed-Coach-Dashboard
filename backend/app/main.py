@@ -1,5 +1,6 @@
 """FastAPI shell — phase 1. Routes grow per phase; contracts stay typed."""
 
+import logging
 import os
 from pathlib import Path
 
@@ -8,12 +9,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.data_loader import load_exercises, load_member_context
 from app.models import Exercise, MemberContext
 from app.runtime.generator import generate_workout
 from app.runtime.schemas import GenerationResult
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -27,8 +30,8 @@ _allowed_origins = [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[o for o in _allowed_origins if o],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["content-type"],
 )
 
 
@@ -87,8 +90,9 @@ def copilot_chat_stream(req: ChatRequest) -> StreamingResponse:
         try:
             for event in run_copilot_stream(req.message, req.session_id, anthropic_chat_stream):
                 yield sse_format(event)
-        except Exception as exc:  # surface as an SSE error frame, not a dropped socket
-            yield sse_format({"type": "error", "error": str(exc)})
+        except Exception:  # surface as an SSE error frame, not a dropped socket
+            logger.exception("copilot stream failed")
+            yield sse_format({"type": "error", "error": "internal error"})
 
     return StreamingResponse(event_source(), media_type="text/event-stream")
 
@@ -116,7 +120,7 @@ def timeseries(metric: str) -> dict:
 
 class GenerateRequest(BaseModel):
     prompt: str
-    minutes: int = 30
+    minutes: int = Field(30, ge=5, le=180)
     use_member_context: bool = True
 
 
