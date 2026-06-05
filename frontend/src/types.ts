@@ -58,10 +58,57 @@ export type Timeseries = {
   error?: string;
 };
 
+export type Goal = {
+  id: string;
+  priority: number;
+  target_date: string | null;
+  text: string;
+};
+
+export type Preferences = {
+  training_days_per_week: number;
+  preferred_days: string[];
+  preferred_session_minutes: number;
+  dislikes: string[];
+  notes: string;
+};
+
+export type WorkoutHistoryItem = {
+  date: string;
+  title: string;
+  planned: boolean;
+  completed: boolean;
+  duration_min: number;
+  rpe: number | null;
+  exercises: string[];
+};
+
+export type AdherenceWeek = { week_of: string; pct: number };
+export type Adherence = { trend: string; weekly_completion_pct: AdherenceWeek[] };
+
+export type Biomarkers = {
+  hrv_ms: number;
+  resting_hr_bpm: number;
+  sleep_hours_last_7_days: number[];
+  weight_trend_kg: { date: string; kg: number }[];
+};
+
 export type MemberProfile = {
-  profile: { id: string; name: string; age: number; sex: string };
+  profile: {
+    id: string;
+    name: string;
+    age: number;
+    sex: string;
+    tier?: string;
+    member_since?: string;
+  };
+  goals: Goal[];
+  preferences: Preferences;
   injuries: { region: string; status: string; severity: string; notes: string }[];
   equipment_available: string[];
+  workout_history: WorkoutHistoryItem[];
+  adherence: Adherence;
+  biomarkers: Biomarkers;
   coach_brief: {
     generated_for: string;
     morning_tasks: { type: string; text: string }[];

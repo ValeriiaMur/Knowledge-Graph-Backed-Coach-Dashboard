@@ -4,7 +4,7 @@ export function QuickPrompts({ prompts, onPick, disabled }: Props): JSX.Element 
   return (
     <div className="quick-row">
       {prompts.map((p) => (
-        <button key={p} className="btn-ghost" disabled={disabled} onClick={() => onPick(p)}>
+        <button key={p} className="pill pill-outline" disabled={disabled} onClick={() => onPick(p)}>
           {p}
         </button>
       ))}

@@ -2,10 +2,10 @@ import type { Timeseries } from "../types";
 
 type Props = { series: Timeseries };
 
-/** Dependency-free SVG line chart for copilot chart prompts. */
+/** Dependency-free SVG line chart for copilot chart prompts, in DS ink/accent. */
 export function TrendChart({ series }: Props): JSX.Element {
   if (series.error || series.points.length === 0) {
-    return <p className="error">{series.error ?? "no data"}</p>;
+    return <p className="error-text">{series.error ?? "no data"}</p>;
   }
   const W = 360;
   const H = 140;
@@ -22,17 +22,17 @@ export function TrendChart({ series }: Props): JSX.Element {
   return (
     <div className="chart-wrap">
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label={series.metric}>
-        <text x={PAD} y={14} fontSize="10" fill="#718096">
+        <text x={PAD} y={14} fontSize="10" fill="var(--muted)">
           {series.metric} ({series.unit ?? ""})
         </text>
-        <path d={path} fill="none" stroke="#2b6cb0" strokeWidth="2" />
+        <path d={path} fill="none" stroke="var(--accent-deep)" strokeWidth="2" />
         {series.points.map((p, i) => (
           <g key={p.x}>
-            <circle cx={x(i)} cy={y(p.y)} r="3" fill="#2b6cb0" />
-            <text x={x(i)} y={H - 8} fontSize="8" fill="#a0aec0" textAnchor="middle">
+            <circle cx={x(i)} cy={y(p.y)} r="3" fill="var(--ink)" />
+            <text x={x(i)} y={H - 8} fontSize="8" fill="var(--muted)" textAnchor="middle">
               {p.x.slice(5)}
             </text>
-            <text x={x(i)} y={y(p.y) - 6} fontSize="8" fill="#4a5568" textAnchor="middle">
+            <text x={x(i)} y={y(p.y) - 6} fontSize="8" fill="var(--ink-2)" textAnchor="middle">
               {p.y}
             </text>
           </g>

@@ -95,10 +95,13 @@ export function CopilotPanel(): JSX.Element {
   };
 
   return (
-    <div className="panel">
-      <h2>Coach copilot</h2>
+    <div className="c c-pad chat-card rise">
+      <div className="card-head">
+        <span className="card-title">Coach copilot</span>
+        <span className="tag">grounded in member context</span>
+      </div>
       <QuickPrompts prompts={prompts} onPick={(p) => void send(p)} disabled={busy} />
-      <div className="chat-log" ref={logRef}>
+      <div className="chat-log no-sb" ref={logRef}>
         {messages.map((m) => (
           <ChatBubble key={m.id} msg={m} />
         ))}
@@ -106,12 +109,17 @@ export function CopilotPanel(): JSX.Element {
       </div>
       <div className="chat-input">
         <input
+          className="input-pill"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && input && !busy && void send(input)}
           placeholder="Ask about this member…"
         />
-        <button className="btn" disabled={busy || !input} onClick={() => void send(input)}>
+        <button
+          className="pill pill-dark pill-lg"
+          disabled={busy || !input}
+          onClick={() => void send(input)}
+        >
           Send
         </button>
       </div>

@@ -2,14 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import { api } from "../api";
 import type { GraphData } from "../types";
 
+/** Node palette drawn from the design system's accent variants so the
+ * graph reads as part of the same family. */
 const KIND_COLORS: Record<string, string> = {
-  exercise: "#90cdf4",
-  muscle: "#9ae6b4",
-  joint: "#feb2b2",
-  substructure: "#fbd38d",
-  equipment: "#d6bcfa",
-  movement_pattern: "#cbd5e0",
-  condition: "#f687b3",
+  exercise: "#7fc8ff",
+  muscle: "#c7e85a",
+  joint: "#ff6b3d",
+  substructure: "#f1ce46",
+  equipment: "#b9a6ff",
+  movement_pattern: "#9c978c",
+  condition: "#e3bb2b",
 };
 
 type Pos = { x: number; y: number };
@@ -57,18 +59,21 @@ export function GraphView(): JSX.Element {
     return pos;
   }, [data]);
 
-  if (!data) return <div className="panel graph-panel muted">Loading graph…</div>;
+  if (!data) return <div className="c c-pad center-note rise">Loading graph…</div>;
 
   const visibleLinks = selected
     ? data.links.filter((l) => l.source === selected || l.target === selected)
     : [];
 
   return (
-    <div className="panel graph-panel">
-      <h2>
-        Movement / clinical knowledge graph — {data.nodes.length} nodes, {data.links.length} edges
-        {selected ? ` · ${selected}` : " · click a node"}
-      </h2>
+    <div className="c c-pad graph-card rise">
+      <div className="card-head">
+        <span className="card-title">Movement / clinical knowledge graph</span>
+        <span className="tag">
+          {data.nodes.length} nodes · {data.links.length} edges
+          {selected ? ` · ${selected}` : " · click a node"}
+        </span>
+      </div>
       <svg viewBox="0 0 900 560" width="100%">
         {visibleLinks.map((l, i) => {
           const a = layout.get(l.source);
@@ -76,12 +81,12 @@ export function GraphView(): JSX.Element {
           if (!a || !b) return null;
           return (
             <g key={`${l.source}-${l.target}-${i}`}>
-              <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#2b6cb0" strokeWidth="1.2" />
+              <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="var(--ink)" strokeWidth="1.2" />
               <text
                 x={(a.x + b.x) / 2}
                 y={(a.y + b.y) / 2}
                 fontSize="7"
-                fill="#2b6cb0"
+                fill="var(--ink-2)"
                 textAnchor="middle"
               >
                 {l.rel}
@@ -99,8 +104,8 @@ export function GraphView(): JSX.Element {
               cx={p.x}
               cy={p.y}
               r={active ? 7 : 4}
-              fill={KIND_COLORS[n.kind] ?? "#cbd5e0"}
-              stroke={active ? "#1a2c42" : "#fff"}
+              fill={KIND_COLORS[n.kind] ?? "#9c978c"}
+              stroke={active ? "var(--ink)" : "var(--card)"}
               strokeWidth="1"
               style={{ cursor: "pointer" }}
               onClick={() => setSelected(active ? null : n.id)}
@@ -112,9 +117,9 @@ export function GraphView(): JSX.Element {
           );
         })}
       </svg>
-      <div className="quick-row">
+      <div className="legend-row">
         {Object.entries(KIND_COLORS).map(([kind, color]) => (
-          <span key={kind} className="badge" style={{ background: color }}>
+          <span key={kind} className="tag" style={{ background: color, color: "#201f1c" }}>
             {kind}
           </span>
         ))}

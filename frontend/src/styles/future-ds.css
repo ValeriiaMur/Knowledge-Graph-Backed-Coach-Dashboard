@@ -1,0 +1,277 @@
+/* ============================================================
+   FUTURE COACH — Design System
+   Extracted from the Crextio HR dashboard reference:
+   warm cream gradient · golden yellow accent · soft rounded
+   cards · near-black pills · friendly geometric grotesk (Onest)
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap");
+
+:root {
+  /* ---- core palette (warm, low-saturation) ---- */
+  --ink: #201f1c; /* near-black warm — headlines, big numerics */
+  --ink-2: #6f6b62; /* secondary text */
+  --muted: #9c978c; /* tertiary / captions */
+  --line: rgba(32, 31, 28, 0.09);
+  --line-soft: rgba(32, 31, 28, 0.05);
+
+  /* dark surface (the onboarding / session panel + dark pills) */
+  --dark: #242320;
+  --dark-2: #2c2a26;
+  --dark-line: rgba(255, 255, 255, 0.08);
+  --on-dark: #f4f1ea;
+  --on-dark-2: rgba(244, 241, 234, 0.52);
+
+  /* ---- accent (default: golden yellow) ---- */
+  --accent: #f1ce46;
+  --accent-deep: #e3bb2b;
+  --accent-soft: #fbeec0;
+  --accent-ink: #2a2410; /* text that sits on accent fills */
+
+  /* ---- surfaces ---- */
+  --card: #fcf9f1;
+  --card-2: #f8f1e0;
+  --card-glass: rgba(255, 255, 255, 0.46);
+  --chip: rgba(32, 31, 28, 0.05);
+
+  /* ---- backdrop ---- */
+  --desk: #71757d; /* slate desk behind the panel */
+  --panel-cool: #e9e8ea; /* cool top-left of the gradient */
+  --panel-warm: #f4e8c6; /* warm bottom-right of the gradient */
+  --panel-bg: linear-gradient(118deg, var(--panel-cool) 0%, #f3ecd9 46%, var(--panel-warm) 100%);
+
+  /* ---- geometry ---- */
+  --r-panel: 40px;
+  --r-card: 26px;
+  --r-sm: 15px;
+  --r-pill: 999px;
+  --r-scale: 1; /* tweak multiplier */
+
+  /* ---- elevation ---- */
+  --shadow-card: 0 1px 2px rgba(32, 31, 28, 0.04), 0 18px 40px -28px rgba(32, 31, 28, 0.28);
+  --shadow-dark: 0 24px 50px -24px rgba(0, 0, 0, 0.55);
+  --shadow-pop: 0 8px 30px -10px rgba(32, 31, 28, 0.3);
+
+  /* ---- type ---- */
+  --font-display: "Onest", system-ui, sans-serif;
+  --font-sans: "Onest", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+}
+
+/* ===== DARK THEME (tweak) ===== */
+[data-theme="dark"] {
+  --ink: #f3f0e9;
+  --ink-2: rgba(243, 240, 233, 0.62);
+  --muted: rgba(243, 240, 233, 0.4);
+  --line: rgba(255, 255, 255, 0.1);
+  --line-soft: rgba(255, 255, 255, 0.06);
+
+  --card: #232220;
+  --card-2: #1d1c1a;
+  --card-glass: rgba(255, 255, 255, 0.04);
+  --chip: rgba(255, 255, 255, 0.07);
+
+  --dark: #100f0d;
+  --dark-2: #181714;
+  --on-dark: #f4f1ea;
+  --on-dark-2: rgba(244, 241, 234, 0.52);
+
+  --desk: #0c0b0a;
+  --panel-cool: #1a1916;
+  --panel-warm: #242017;
+  --panel-bg: radial-gradient(120% 120% at 88% 8%, #2a2417 0%, #1b1a16 48%, #141310 100%);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 22px 46px -28px rgba(0, 0, 0, 0.7);
+}
+
+/* ===== ACCENT VARIANTS (tweak) ===== */
+[data-accent="amber"] {
+  --accent: #f1ce46;
+  --accent-deep: #e3bb2b;
+  --accent-soft: #fbeec0;
+  --accent-ink: #2a2410;
+}
+[data-accent="orange"] {
+  --accent: #ff6b3d;
+  --accent-deep: #f1571f;
+  --accent-soft: #ffd9c9;
+  --accent-ink: #3a1405;
+}
+[data-accent="lime"] {
+  --accent: #c7e85a;
+  --accent-deep: #a9d030;
+  --accent-soft: #e9f6c2;
+  --accent-ink: #26300a;
+}
+[data-accent="sky"] {
+  --accent: #7fc8ff;
+  --accent-deep: #3aa3f5;
+  --accent-soft: #d4ecff;
+  --accent-ink: #0a2438;
+}
+[data-accent="violet"] {
+  --accent: #b9a6ff;
+  --accent-deep: #8e74f0;
+  --accent-soft: #e6dfff;
+  --accent-ink: #241a4a;
+}
+
+/* ===== CARD STYLE (tweak) ===== */
+[data-cardstyle="flat"] {
+  --shadow-card: 0 0 0 1px var(--line);
+}
+[data-cardstyle="glass"] {
+  --card: var(--card-glass);
+  --card-2: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== RADIUS SCALE (tweak) — applied via calc on the helpers below ===== */
+.r-panel {
+  border-radius: calc(var(--r-panel) * var(--r-scale));
+}
+.r-card {
+  border-radius: calc(var(--r-card) * var(--r-scale));
+}
+.r-sm {
+  border-radius: calc(var(--r-sm) * var(--r-scale));
+}
+
+/* ---------- base ---------- */
+* {
+  box-sizing: border-box;
+}
+.ds-reset {
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- reusable primitives ---------- */
+
+/* card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--r-card) * var(--r-scale));
+  box-shadow: var(--shadow-card);
+}
+
+/* pills */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: var(--r-pill);
+  padding: 9px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+.pill-dark {
+  background: var(--dark);
+  color: var(--on-dark);
+}
+.pill-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.pill-ghost {
+  background: transparent;
+  color: var(--ink-2);
+}
+.pill-outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+.pill:hover {
+  transform: translateY(-1px);
+}
+
+/* tags */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--r-pill);
+  padding: 4px 11px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--chip);
+  color: var(--ink-2);
+}
+.tag-ink {
+  background: var(--ink);
+  color: var(--card);
+}
+.tag-accent {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+/* monospace eyebrow */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* round icon button */
+.iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+.iconbtn:hover {
+  transform: translateY(-1px);
+}
+.iconbtn-dark {
+  background: var(--dark);
+  color: var(--on-dark);
+  border-color: transparent;
+}
+.iconbtn-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: transparent;
+}
+
+/* big numeric */
+.bignum {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 0.9;
+  font-size: 60px;
+  font-feature-settings: "tnum" 1;
+}
+
+/* scrollbar tidy */
+.no-sb::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
