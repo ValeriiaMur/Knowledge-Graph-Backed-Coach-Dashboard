@@ -16,7 +16,7 @@ make dev                     # backend :8000 + frontend :5173
 
 Open http://localhost:5173, log in with any coach name (mock auth per spec), and you land on the dashboard.
 
-Other targets: `make test` (67 backend tests) · `make lint` (ruff + eslint + prettier, zero-warning bar) · `make eval` (resolver 15/15 · safety 3/3 · plan quality 3/3).
+Other targets: `make test` (69 backend tests) · `make lint` (ruff + eslint + prettier, zero-warning bar) · `make eval` (resolver 15/15 · safety 3/3 · plan quality 3/3).
 
 Without `ANTHROPIC_API_KEY` everything deterministic still works — member dashboard, graph view, chart prompts, and the full safety/provenance pipeline; only LLM plan composition and free-form copilot chat need the key. `VOYAGE_API_KEY` enables the resolver's third (embedding) pass; without it the resolver degrades gracefully to exact + fuzzy.
 
@@ -61,7 +61,9 @@ coach prompt ──► resolver (exact → fuzzy → embedding) ──► constr
 
 **Longitudinal reasoning, deterministic.** Progression over time (adherence slope, week-over-week deltas, session volume, RPE and weight trends) is computed by pure functions (`app/copilot/longitudinal.py`), not by asking the LLM to eyeball history. It surfaces twice: the copilot's `get_progression` tool ("How is she progressing?" quick prompt), and as `member_progression` in the generator's composition payload — so a plan for a member with declining adherence is dosed against her actual trajectory. Guidance only; safety still lives in the filter.
 
-**Curated SNOMED lookup instead of a live terminology server.** SKOS mappings (`exactMatch`/`closeMatch`, verified flags) are stored on the nodes. This keeps the demo hermetic while preserving the ontology-grounding shape a production system would need.
+**Curated SNOMED lookup instead of a live terminology server.** SKOS mappings (`exactMatch`/`closeMatch`, verified flags) are stored on the nodes. This keeps the demo hermetic while preserving the ontology-grounding shape a production system would need. The full what-we-pulled / what-we-left-out reasoning per ontology (SNOMED, SKOS, PROV-O, OPE, COPPER) and the PROV-O alignment table for the provenance records live in [docs/KG_SCHEMA.md](./docs/KG_SCHEMA.md).
+
+**Provenance covers both directions.** Every plan records not just what was *removed* (reason + graph path + substitutes) but why each surviving exercise was *chosen* — its `targets`/`follows` graph path, the resolved prompt concepts it matches, its priority tier, and a passed-safety-filter attestation (`provenance.selected`, rendered under "Why each exercise was chosen" in the Generate tab).
 
 ## How this scales
 
@@ -114,7 +116,7 @@ or use the **Generate** tab — the provenance card renders resolved concepts, r
 
 ## Testing & evals
 
-**Unit tests (67, red-green TDD on the deterministic core).** The spec mandates tests for the resolver and safety filter at minimum; those are the critical paths because they make the safety guarantees — a resolver false negative silently drops a coach's constraint, and a filter bug is exactly the unsafe-recommendation failure the project exists to prevent. Coverage: resolver (10), safety filter (8), both KG builders (11), runtime/validation (8), copilot tools + agent loop (12), streaming loop (5), longitudinal trends (6), data loader (5), graph endpoint (2). LLM-composition code is tested *structurally* (schema-valid output, no filtered exercise present) — never string-matched.
+**Unit tests (69, red-green TDD on the deterministic core).** The spec mandates tests for the resolver and safety filter at minimum; those are the critical paths because they make the safety guarantees — a resolver false negative silently drops a coach's constraint, and a filter bug is exactly the unsafe-recommendation failure the project exists to prevent. Coverage: resolver (10), safety filter (8), both KG builders (11), runtime/validation incl. selection rationale (9), copilot tools + agent loop incl. chat attachments (13), streaming loop (5), longitudinal trends (6), data loader (5), graph endpoint (2). LLM-composition code is tested *structurally* (schema-valid output, no filtered exercise present) — never string-matched.
 
 **Eval pipeline (`make eval`)** — the regression gate, runs offline (no API key):
 

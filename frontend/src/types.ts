@@ -31,12 +31,20 @@ export type RemovedExercise = {
   substitutes: string[];
 };
 
+export type SelectedExercise = {
+  node_id: string;
+  name: string;
+  reason: string;
+  graph_path: string;
+};
+
 export type Provenance = {
   resolved_concepts: ResolvedConcept[];
   unresolved: string[];
   removed: RemovedExercise[];
   allowed_count: number;
   down_ranked: string[];
+  selected: SelectedExercise[];
 };
 
 export type TraceEvent = { step: string; ms: number; detail: Record<string, unknown> };
@@ -116,7 +124,13 @@ export type MemberProfile = {
   };
 };
 
-export type ChatHistoryItem = { ts: string; from: string; text: string };
+export type ChatAttachment = { type: string; caption?: string; url?: string };
+export type ChatHistoryItem = {
+  ts: string;
+  from: string;
+  text: string;
+  attachments?: ChatAttachment[];
+};
 
 export type SkosMapping = {
   scheme: string;

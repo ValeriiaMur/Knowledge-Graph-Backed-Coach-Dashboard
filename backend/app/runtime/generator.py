@@ -18,6 +18,7 @@ from app.runtime.schemas import (
     GenerationResult,
     PlanItem,
     Provenance,
+    SelectedExercise,
     Trace,
     TraceEvent,
     WorkoutPlan,
@@ -106,7 +107,44 @@ def generate_workout(
         logger.warning("plan rejected: %s", exc)
         return GenerationResult(plan=None, provenance=provenance, trace=trace, error=str(exc))
 
+    provenance.selected = _selection_rationale(plan, result.allowed, derived.resolved_concepts, g)
     return GenerationResult(plan=plan, provenance=provenance, trace=trace)
+
+
+def _selection_rationale(
+    plan: WorkoutPlan, allowed, resolved_concepts, g
+) -> list[SelectedExercise]:
+    """Inclusion-side provenance (spec: 'why each exercise was chosen, which
+    graph path justified it') — deterministic, straight from the graph."""
+    by_id = {e.node_id: e for e in allowed}
+    resolved_ids = {c.node_id: c.query for c in resolved_concepts if c.node_id}
+    selected: list[SelectedExercise] = []
+    seen: set[str] = set()
+    for item in plan.warmup + plan.main + plan.cooldown:
+        if item.exercise in seen:
+            continue
+        seen.add(item.exercise)
+        edges = list(g.out_edges(item.exercise, data=True))
+        targets = [v for _, v, d in edges if d["rel"] == "targets"]
+        patterns = [v for _, v, d in edges if d["rel"] == "follows"]
+        matches = [f'"{resolved_ids[v]}" → {v}' for _, v, d in edges if v in resolved_ids]
+        entry = by_id.get(item.exercise)
+        reason = (
+            (f"matches prompt concepts ({'; '.join(matches)}); " if matches else "")
+            + f"priority tier {entry.priority_tier if entry else '?'} candidate; "
+            + "passed safety filter (not contraindicated, equipment available)"
+            + ("; down-ranked — kept with caution" if entry and entry.down_ranked else "")
+        )
+        graph_path = f"{item.exercise} -targets-> {targets} · -follows-> {patterns}"
+        selected.append(
+            SelectedExercise(
+                node_id=item.exercise,
+                name=item.name or (entry.name if entry else item.exercise),
+                reason=reason,
+                graph_path=graph_path,
+            )
+        )
+    return selected
 
 
 def _validate(raw: dict, allowed_ids: set[str], g) -> WorkoutPlan:

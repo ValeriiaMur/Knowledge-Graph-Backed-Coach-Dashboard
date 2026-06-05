@@ -31,6 +31,16 @@ class Trace(BaseModel):
     events: list[TraceEvent] = []
 
 
+class SelectedExercise(BaseModel):
+    """Why a plan item was chosen — the inclusion-side provenance
+    (PROV-O style: the graph path is the prov:wasDerivedFrom justification)."""
+
+    node_id: str
+    name: str
+    reason: str
+    graph_path: str
+
+
 class Provenance(BaseModel):
     """Why the plan looks the way it does — required for every generated plan."""
 
@@ -39,6 +49,7 @@ class Provenance(BaseModel):
     removed: list[RemovedExercise]
     allowed_count: int
     down_ranked: list[str]
+    selected: list[SelectedExercise] = []
 
     model_config = {"arbitrary_types_allowed": True}
 

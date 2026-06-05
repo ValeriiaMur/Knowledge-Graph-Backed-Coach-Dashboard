@@ -78,7 +78,16 @@ def get_chat_history() -> list[dict]:
     g, _ = _member()
     msgs = [d for _, d in g.nodes(data=True) if d["kind"] == "chat_message"]
     return sorted(
-        ({"ts": d["ts"], "from": d["from"], "text": d["text"]} for d in msgs),
+        (
+            {
+                "ts": d["ts"],
+                "from": d["from"],
+                "text": d["text"],
+                # spec: "chat with history/images" — attachments must survive
+                **({"attachments": d["attachments"]} if d.get("attachments") else {}),
+            }
+            for d in msgs
+        ),
         key=lambda x: x["ts"],
     )
 

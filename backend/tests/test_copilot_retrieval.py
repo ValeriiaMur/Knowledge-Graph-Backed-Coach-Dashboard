@@ -68,3 +68,16 @@ def test_registry_exposes_all_tools():
     assert expected <= set(TOOL_REGISTRY)
     for fn in TOOL_REGISTRY.values():
         assert callable(fn)
+
+
+def test_chat_history_carries_image_attachments():
+    """Spec: 'chat with history/images' — the synthetic member has one image
+    attachment (home setup photo); it must survive retrieval, not be dropped."""
+    from app.copilot.retrieval import get_chat_history
+
+    msgs = get_chat_history()
+    with_attachments = [m for m in msgs if m.get("attachments")]
+    assert with_attachments, "expected at least one chat message with attachments"
+    att = with_attachments[0]["attachments"][0]
+    assert att["type"] == "image"
+    assert "caption" in att

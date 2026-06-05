@@ -41,6 +41,17 @@ export function ProvenanceTrace({ provenance, events }: Props): JSX.Element {
           </div>
         ))}
       </details>
+      {provenance.selected.length > 0 && (
+        <details>
+          <summary>Why each exercise was chosen — {provenance.selected.length}</summary>
+          {provenance.selected.map((s) => (
+            <div key={s.node_id} className="prov-row">
+              <strong>{s.name}</strong> — {s.reason}
+              <span className="mono">{s.graph_path}</span>
+            </div>
+          ))}
+        </details>
+      )}
       <details>
         <summary>Pipeline trace</summary>
         {events.map((e) => (

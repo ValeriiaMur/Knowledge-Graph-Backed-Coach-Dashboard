@@ -278,6 +278,38 @@
   flex: 1;
 }
 
+/* image attachment inside a bubble (spec: chat with history/images) */
+.chat-att {
+  margin-top: 8px;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--r-sm) * var(--r-scale));
+  background: var(--card);
+  overflow: hidden;
+  max-width: 240px;
+}
+.chat-att img {
+  display: block;
+  width: 100%;
+}
+.chat-att-ph {
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  background:
+    repeating-linear-gradient(115deg, transparent 0 8px, rgba(32, 31, 28, 0.045) 8px 9px),
+    var(--card-2);
+}
+.chat-att-cap {
+  display: block;
+  padding: 7px 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-2);
+  border-top: 1px solid var(--line-soft);
+}
+
 /* chart inside a bubble */
 .chart-wrap {
   background: var(--card);

@@ -366,16 +366,54 @@
     }
    ],
    "allowed_count": 10,
-   "down_ranked": []
+   "down_ranked": [],
+   "selected": [
+    {
+     "node_id": "exercise:0e3201e9-4394-4902-a717-f4ce544d98de",
+     "name": "Push-Up to Knee-Drive",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:0e3201e9-4394-4902-a717-f4ce544d98de -targets-> ['muscle:chest', 'muscle:triceps', 'muscle:deltoids', 'muscle:core'] \u00b7 -follows-> ['movement_pattern:upper push - horizontal', 'movement_pattern:core - anti-extension', 'movement_pattern:core - flexion']"
+    },
+    {
+     "node_id": "exercise:1465f189-eb62-410d-a73e-590a84693dd0",
+     "name": "Dumbbell Neutral-Grip Bench Press",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:1465f189-eb62-410d-a73e-590a84693dd0 -targets-> ['muscle:chest', 'muscle:triceps'] \u00b7 -follows-> ['movement_pattern:upper push - horizontal']"
+    },
+    {
+     "node_id": "exercise:03258dbf-bc21-4495-bcae-ca627b3a0f20",
+     "name": "Alternating Dumbbell Overhead Press",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:03258dbf-bc21-4495-bcae-ca627b3a0f20 -targets-> ['muscle:deltoids', 'muscle:triceps'] \u00b7 -follows-> ['movement_pattern:upper push - vertical']"
+    },
+    {
+     "node_id": "exercise:0a2dc786-fb42-4571-9b26-f58cdeb2c70e",
+     "name": "Bodyweight Pike",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:0a2dc786-fb42-4571-9b26-f58cdeb2c70e -targets-> ['muscle:deltoids', 'muscle:core', 'muscle:hip flexors'] \u00b7 -follows-> ['movement_pattern:core - flexion', 'movement_pattern:core - anti-extension']"
+    },
+    {
+     "node_id": "exercise:12b80a72-6c2f-43f0-b3bd-6b11e14e3358",
+     "name": "Resistance Band Reverse Curl",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:12b80a72-6c2f-43f0-b3bd-6b11e14e3358 -targets-> ['muscle:biceps', 'muscle:forearms'] \u00b7 -follows-> ['movement_pattern:arms - accessory']"
+    },
+    {
+     "node_id": "exercise:0aa65232-8367-4622-b0ef-37e31626ba65",
+     "name": "Bench-Lying Single-Arm Dumbbell Tricep Extension",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:0aa65232-8367-4622-b0ef-37e31626ba65 -targets-> ['muscle:triceps'] \u00b7 -follows-> ['movement_pattern:arms - accessory']"
+    }
+   ]
   },
   "trace": [
    {
     "step": "resolve_concepts",
-    "ms": 2.08
+    "ms": 2.28
    },
    {
     "step": "safety_filter",
-    "ms": 1.01
+    "ms": 1.06
    },
    {
     "step": "compose_plan",
@@ -792,16 +830,54 @@
     }
    ],
    "allowed_count": 10,
-   "down_ranked": []
+   "down_ranked": [],
+   "selected": [
+    {
+     "node_id": "exercise:0e3201e9-4394-4902-a717-f4ce544d98de",
+     "name": "Push-Up to Knee-Drive",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:0e3201e9-4394-4902-a717-f4ce544d98de -targets-> ['muscle:chest', 'muscle:triceps', 'muscle:deltoids', 'muscle:core'] \u00b7 -follows-> ['movement_pattern:upper push - horizontal', 'movement_pattern:core - anti-extension', 'movement_pattern:core - flexion']"
+    },
+    {
+     "node_id": "exercise:1465f189-eb62-410d-a73e-590a84693dd0",
+     "name": "Dumbbell Neutral-Grip Bench Press",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:1465f189-eb62-410d-a73e-590a84693dd0 -targets-> ['muscle:chest', 'muscle:triceps'] \u00b7 -follows-> ['movement_pattern:upper push - horizontal']"
+    },
+    {
+     "node_id": "exercise:03258dbf-bc21-4495-bcae-ca627b3a0f20",
+     "name": "Alternating Dumbbell Overhead Press",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:03258dbf-bc21-4495-bcae-ca627b3a0f20 -targets-> ['muscle:deltoids', 'muscle:triceps'] \u00b7 -follows-> ['movement_pattern:upper push - vertical']"
+    },
+    {
+     "node_id": "exercise:0a2dc786-fb42-4571-9b26-f58cdeb2c70e",
+     "name": "Bodyweight Pike",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:0a2dc786-fb42-4571-9b26-f58cdeb2c70e -targets-> ['muscle:deltoids', 'muscle:core', 'muscle:hip flexors'] \u00b7 -follows-> ['movement_pattern:core - flexion', 'movement_pattern:core - anti-extension']"
+    },
+    {
+     "node_id": "exercise:12b80a72-6c2f-43f0-b3bd-6b11e14e3358",
+     "name": "Resistance Band Reverse Curl",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:12b80a72-6c2f-43f0-b3bd-6b11e14e3358 -targets-> ['muscle:biceps', 'muscle:forearms'] \u00b7 -follows-> ['movement_pattern:arms - accessory']"
+    },
+    {
+     "node_id": "exercise:0aa65232-8367-4622-b0ef-37e31626ba65",
+     "name": "Bench-Lying Single-Arm Dumbbell Tricep Extension",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:0aa65232-8367-4622-b0ef-37e31626ba65 -targets-> ['muscle:triceps'] \u00b7 -follows-> ['movement_pattern:arms - accessory']"
+    }
+   ]
   },
   "trace": [
    {
     "step": "resolve_concepts",
-    "ms": 1.01
+    "ms": 0.99
    },
    {
     "step": "safety_filter",
-    "ms": 0.96
+    "ms": 1.44
    },
    {
     "step": "compose_plan",
@@ -1235,16 +1311,54 @@
     }
    ],
    "allowed_count": 10,
-   "down_ranked": []
+   "down_ranked": [],
+   "selected": [
+    {
+     "node_id": "exercise:0e3201e9-4394-4902-a717-f4ce544d98de",
+     "name": "Push-Up to Knee-Drive",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:0e3201e9-4394-4902-a717-f4ce544d98de -targets-> ['muscle:chest', 'muscle:triceps', 'muscle:deltoids', 'muscle:core'] \u00b7 -follows-> ['movement_pattern:upper push - horizontal', 'movement_pattern:core - anti-extension', 'movement_pattern:core - flexion']"
+    },
+    {
+     "node_id": "exercise:1465f189-eb62-410d-a73e-590a84693dd0",
+     "name": "Dumbbell Neutral-Grip Bench Press",
+     "reason": "matches prompt concepts (\"dumbbells and kettlebell\" \u2192 equipment:Dumbbell); priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:1465f189-eb62-410d-a73e-590a84693dd0 -targets-> ['muscle:chest', 'muscle:triceps'] \u00b7 -follows-> ['movement_pattern:upper push - horizontal']"
+    },
+    {
+     "node_id": "exercise:03258dbf-bc21-4495-bcae-ca627b3a0f20",
+     "name": "Alternating Dumbbell Overhead Press",
+     "reason": "matches prompt concepts (\"dumbbells and kettlebell\" \u2192 equipment:Dumbbell); priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:03258dbf-bc21-4495-bcae-ca627b3a0f20 -targets-> ['muscle:deltoids', 'muscle:triceps'] \u00b7 -follows-> ['movement_pattern:upper push - vertical']"
+    },
+    {
+     "node_id": "exercise:0a2dc786-fb42-4571-9b26-f58cdeb2c70e",
+     "name": "Bodyweight Pike",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:0a2dc786-fb42-4571-9b26-f58cdeb2c70e -targets-> ['muscle:deltoids', 'muscle:core', 'muscle:hip flexors'] \u00b7 -follows-> ['movement_pattern:core - flexion', 'movement_pattern:core - anti-extension']"
+    },
+    {
+     "node_id": "exercise:12b80a72-6c2f-43f0-b3bd-6b11e14e3358",
+     "name": "Resistance Band Reverse Curl",
+     "reason": "priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:12b80a72-6c2f-43f0-b3bd-6b11e14e3358 -targets-> ['muscle:biceps', 'muscle:forearms'] \u00b7 -follows-> ['movement_pattern:arms - accessory']"
+    },
+    {
+     "node_id": "exercise:0aa65232-8367-4622-b0ef-37e31626ba65",
+     "name": "Bench-Lying Single-Arm Dumbbell Tricep Extension",
+     "reason": "matches prompt concepts (\"dumbbells and kettlebell\" \u2192 equipment:Dumbbell); priority tier 2 candidate; passed safety filter (not contraindicated, equipment available)",
+     "graph_path": "exercise:0aa65232-8367-4622-b0ef-37e31626ba65 -targets-> ['muscle:triceps'] \u00b7 -follows-> ['movement_pattern:arms - accessory']"
+    }
+   ]
   },
   "trace": [
    {
     "step": "resolve_concepts",
-    "ms": 0.74
+    "ms": 1.15
    },
    {
     "step": "safety_filter",
-    "ms": 0.91
+    "ms": 1.05
    },
    {
     "step": "compose_plan",

@@ -88,3 +88,17 @@ def test_trace_records_pipeline_events():
     assert "safety_filter" in events
     assert "compose_plan" in events
     assert all(e.ms >= 0 for e in result.trace.events)
+
+
+def test_provenance_explains_why_each_exercise_was_chosen():
+    """Spec: provenance = 'why each exercise was chosen, which graph path
+    justified it' — not only what was removed."""
+    result = generate_workout("lower body, easy on the knee", minutes=30, llm=fake_llm)
+    assert result.plan is not None
+    plan_ids = {i.exercise for i in result.plan.warmup + result.plan.main + result.plan.cooldown}
+    selected = {s.node_id: s for s in result.provenance.selected}
+    assert plan_ids == set(selected)  # every plan item is justified
+    for s in selected.values():
+        assert s.graph_path  # e.g. "exercise:x -targets-> muscle:quads"
+        assert "tier" in s.reason
+        assert "passed safety filter" in s.reason

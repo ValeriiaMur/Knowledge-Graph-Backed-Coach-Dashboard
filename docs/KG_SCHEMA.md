@@ -73,3 +73,52 @@ condition(PFPS) → contraindicated_for → patterns      ⇒ exclude (plyo) / d
 member → has_equipment → {Dumbbell, Kettlebell, …}
 exercise → requires → equipment ∉ available           ⇒ exclude, then find substitutes
 ```
+
+## Provenance model (PROV-O alignment)
+
+The generation provenance is a hand-rolled record deliberately **aligned to
+PROV-O semantics** rather than serialized as RDF — the spec allows a clean
+hand-rolled ontology aligned to these concepts, and JSON keeps it renderable
+in the UI and queryable in logs. The mapping:
+
+| Our record | PROV-O term | Meaning |
+|---|---|---|
+| one generation run (`GenerationResult` + `Trace`) | `prov:Activity` | The activity that produced the plan; `TraceEvent`s are its timed steps (`prov:startedAtTime`/`endedAtTime` ≈ `ms`) |
+| the generated `WorkoutPlan` | `prov:Entity` | The artifact whose provenance is recorded |
+| coach prompt + member context + KG 1 | `prov:Entity` (inputs) | `prov:used` by the activity |
+| the LLM composer / the safety filter | `prov:Agent` (`prov:SoftwareAgent`) | `prov:wasAssociatedWith` the activity |
+| `SelectedExercise.graph_path` | `prov:wasDerivedFrom` | The KG path justifying inclusion (targets/follows edges + resolved prompt concepts) |
+| `RemovedExercise.graph_path` + `reason` | `prov:wasInvalidatedBy` (with justification) | The traversal that excluded the exercise |
+| `ResolvedConcept` (query → node, method, confidence) | `prov:wasDerivedFrom` + `prov:value` | How free text became a canonical concept |
+
+Serializing this mapping to actual PROV-O RDF (e.g. for an audit warehouse) is
+a mechanical transform of the JSON — left out of the timebox on purpose.
+
+## Ontology decisions — what we pulled, what we left out
+
+- **SNOMED CT (via curated table):** pulled — joint and condition codes as SKOS
+  mappings (6 verified `exactMatch` joints; spine/conditions `closeMatch`,
+  unverified). It's the clinically meaningful grounding: injuries are the
+  safety-critical concepts, and SNOMED codes are what an EHR-adjacent system
+  would join on. Left out: live NCI EVS API calls (hermetic demo; the
+  `verified` flag marks exactly what a production sync would confirm).
+- **SKOS:** pulled — the mapping vocabulary itself (`exactMatch`/`closeMatch`)
+  on nodes. It's lightweight and does real work: match strength drives how much
+  trust a mapping gets.
+- **PROV-O:** pulled as a semantic alignment (table above), not as RDF.
+- **OPE (Ontology of Physical Exercises):** consulted, left out of the build.
+  The catalog's own taxonomy (19 muscles, 9 joints, 36 patterns, 32 equipment)
+  already provides the exercise-domain structure OPE would; importing OPE
+  classes would have duplicated those concepts under different IRIs without
+  adding a single new safety edge in the timebox. The clean extension is
+  SKOS-mapping our `movement_pattern`/`equipment` nodes onto OPE classes the
+  same way joints map to SNOMED.
+- **COPPER:** consulted, left out. Its personalization/behaviour-change
+  concepts (preferences, adherence, goals) are covered structurally by KG 2's
+  member nodes; adopting COPPER vocabulary would relabel existing nodes rather
+  than enable new reasoning. Revisit if recommendation logic starts using
+  behaviour-change techniques explicitly.
+
+Principle applied (per the spec): **a small subset used meaningfully beats
+wiring up everything shallowly** — every ontology concept we imported sits on
+a traversal path the safety filter or resolver actually walks.

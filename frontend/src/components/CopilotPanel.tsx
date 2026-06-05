@@ -31,9 +31,10 @@ export function CopilotPanel(): JSX.Element {
         setMessages(
           hist.map((h) => ({
             id: nextId++,
-            from: h.from === "member" ? "member" : "ai",
+            from: h.from === "member" ? ("member" as const) : ("ai" as const),
             text: h.text,
             ts: h.ts.slice(0, 16).replace("T", " "),
+            ...(h.attachments ? { attachments: h.attachments } : {}),
           })),
         ),
       )
