@@ -501,7 +501,7 @@ body {
   color: var(--ink);
   font-weight: 600;
 }
-.bubble {
+.peak-bubble {
   position: absolute;
   top: -2px;
   background: var(--accent);

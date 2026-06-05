@@ -36,7 +36,7 @@ export function ProgressCard({ history, now }: Props): JSX.Element {
           <div key={i} className={"barcol" + (d.peak ? " peak" : "")}>
             {d.peak ? (
               <div
-                className="bubble"
+                className="peak-bubble"
                 style={{ opacity: grown ? 1 : 0, transition: "opacity .5s .6s" }}
               >
                 {progress.peakLabel}
