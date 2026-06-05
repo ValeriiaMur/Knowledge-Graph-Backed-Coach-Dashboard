@@ -1,4 +1,5 @@
 import type { Provenance, TraceEvent } from "../types";
+import { Markdown } from "./Markdown";
 
 type Props = { provenance: Provenance; events: TraceEvent[] };
 
@@ -33,7 +34,7 @@ export function ProvenanceTrace({ provenance, events }: Props): JSX.Element {
 
         {provenance.removed.map((r) => (
           <div key={r.node_id} className="prov-row removed">
-            <strong>{r.name}</strong> — {r.reason}
+            <strong>{r.name}</strong> — <Markdown inline>{r.reason}</Markdown>
             <span className="mono">{r.graph_path}</span>
             {r.substitutes.length > 0 && (
               <span className="muted-text">substitutes: {r.substitutes.join(", ")}</span>
@@ -46,7 +47,7 @@ export function ProvenanceTrace({ provenance, events }: Props): JSX.Element {
           <summary>Why each exercise was chosen — {provenance.selected.length}</summary>
           {provenance.selected.map((s) => (
             <div key={s.node_id} className="prov-row">
-              <strong>{s.name}</strong> — {s.reason}
+              <strong>{s.name}</strong> — <Markdown inline>{s.reason}</Markdown>
               <span className="mono">{s.graph_path}</span>
             </div>
           ))}

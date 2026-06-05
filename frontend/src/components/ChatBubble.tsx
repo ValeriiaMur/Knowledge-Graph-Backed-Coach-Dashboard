@@ -1,5 +1,6 @@
 import type { ChatAttachment, Timeseries } from "../types";
 import { Icons } from "../icons";
+import { Markdown } from "./Markdown";
 import { TrendChart } from "./TrendChart";
 
 export type Message = {
@@ -39,7 +40,7 @@ export function ChatBubble({ msg }: Props): JSX.Element {
   return (
     <div className={cls}>
       {msg.from === "member" && <div className="bubble-meta">member · {msg.ts}</div>}
-      {msg.text || "…"}
+      {msg.from === "ai" ? <Markdown>{msg.text || "…"}</Markdown> : msg.text || "…"}
       {msg.attachments?.map((att, i) => (
         <Attachment key={i} att={att} />
       ))}

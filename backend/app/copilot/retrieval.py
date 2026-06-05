@@ -140,11 +140,18 @@ def get_timeseries(metric: str) -> dict:
     series_keys = {"resting_hr": "resting_hr_bpm", "hrv": "hrv_ms", "weight": "weight_trend_kg"}
     if metric in series_keys:
         raw = bio[series_keys[metric]]
-        pts = (
-            [{"x": p.get("date", str(i)), "y": p.get("value", p)} for i, p in enumerate(raw)]
-            if isinstance(raw, list)
-            else [{"x": "current", "y": raw}]
-        )
+        if isinstance(raw, list):
+            # Points are {date, <numeric>} dicts; the value key varies by series
+            # (weight uses "kg"), so pull the numeric field rather than guessing it.
+            pts = [
+                {
+                    "x": p.get("date", str(i)),
+                    "y": next((v for v in p.values() if isinstance(v, (int, float))), None),
+                }
+                for i, p in enumerate(raw)
+            ]
+        else:
+            pts = [{"x": "current", "y": raw}]
         return {"metric": metric, "unit": series_keys[metric], "points": pts}
     return {
         "metric": metric,

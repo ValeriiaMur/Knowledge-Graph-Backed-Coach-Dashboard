@@ -45,6 +45,30 @@ coach prompt ──► resolver (exact → fuzzy → embedding) ──► constr
 - **Copilot:** hand-rolled Anthropic tool-use loop over 14 retrieval tools on KG 2. The model never sees raw member data outside tool results — grounding by construction. Member chat text returned by tools is treated as quoted data, not instructions (prompt-injection stance). Replies stream token-by-token over SSE.
 - **Frontend:** React + Vite, strict TypeScript (`noUncheckedIndexedAccess`), one component per file. The whole UI is built on the **Future DS** design system (`frontend/src/styles/future-ds.css` — tokens, accent variants, dark theme, pill/card/tag primitives); the dashboard renders only data derived from `/api/member` and `/api/generate` via pure functions in `src/derive.ts` — no hardcoded member data anywhere.
 
+The high-level component diagram lives in [system-design.svg](./system-design.svg); the full graph schema (node/edge tables, traversal walkthrough, PROV-O alignment) in [docs/KG_SCHEMA.md](./docs/KG_SCHEMA.md).
+
+## Knowledge graph design — the research decisions
+
+The spec frames the ontology work as a research exercise: decide what to use, not ingest everything. The decisions:
+
+**How the graphs are built — three ingestion layers.** (1) *Derived from the catalog:* the canonical concept nodes — 19 muscles, 9 joints, 32 equipment, 36 movement patterns — are extracted from the 50 exercises' own fields, and each exercise's edges (`targets`/`stresses`/`requires`/`follows`) come straight from its record. Coverage is guaranteed by construction: no exercise can reference a concept that doesn't exist. (2) *Curated clinical table* (`app/graph/ontology.py`): the knowledge the catalog lacks — the anatomy hierarchy (substructure `part_of` joint, so "knee" covers patella/ACL/meniscus), condition nodes with `located_in` + `contraindicated_for` edges (mode: `exclude` vs `down_rank`), and SNOMED SKOS mappings on joints and conditions. (3) *Member ingest:* `member-context.json` becomes typed KG 2 nodes (member, injury, goal, session, chat).
+
+**How the two graphs relate.** One shared `kind:name` ID scheme. KG 2's injury and equipment nodes point at KG 1's canonical nodes (`injury → affects → joint:knee`, `member → has_equipment → equipment:Dumbbell`), so a safety traversal starts in the member's world and ends in the clinical one with zero string matching at query time. That bridge is what lets member constraints auto-apply to every generation.
+
+**What was pulled from each ontology, and what was left out.**
+
+| Ontology | Pulled | Left out — and why |
+|---|---|---|
+| **SNOMED CT** | Joint + condition codes as SKOS mappings (6 verified `exactMatch` joints; conditions `closeMatch`, flagged unverified) | Live NCI EVS calls — hermetic demo; the `verified` flag marks exactly what a production sync would confirm |
+| **SKOS** | The mapping vocabulary itself (`exactMatch`/`closeMatch` + verified flags) — mapping confidence is explicit data | Full concept-scheme machinery; two match strengths do the work |
+| **PROV-O** | The semantics: generation = Activity, plan = Entity, filter/composer = SoftwareAgent, graph paths = `wasDerivedFrom` (mapping table in KG_SCHEMA) | RDF serialization — a mechanical transform of the JSON, deliberately out of the timebox |
+| **OPE** | Consulted for the exercise-domain shape | Class import — the catalog's own taxonomy already provides that structure; OPE classes would duplicate concepts under new IRIs without adding a single safety edge. Extension path: SKOS-map patterns/equipment onto OPE like joints map to SNOMED |
+| **COPPER** | Consulted | Adoption — its personalization/behaviour-change concepts are covered structurally by KG 2 (goals, preferences, adherence); revisit if behaviour-change techniques become explicit logic |
+
+**Why these concepts matter for safety.** Every imported concept sits on a traversal the filter actually walks: SNOMED-coded joints are where injury expansion starts, the `part_of` hierarchy is what makes "her left knee" also exclude patellofemoral loading, contraindication modes encode clinical nuance (plyometrics banned vs deep-flexion down-ranked), and equipment edges drive both filtering and substitute-finding (substitutes must share muscle ∧ movement pattern). Principle applied: **a small subset used meaningfully beats wiring up everything shallowly** — nothing imported is decoration.
+
+**How it's stored.** In-process NetworkX `MultiDiGraph`, JSON-seeded, `lru_cache`d per process — defended in the next section.
+
 ## Why this tech, and why this way
 
 **NetworkX in-process instead of a graph database.** The graph is ~10² nodes and read-only at runtime. An embedded structure gives microsecond traversals, zero ops, and trivially testable pure functions. A graph DB would add a service, a query language, and network latency to buy capabilities (scale, concurrent writes) this stage doesn't need. The graph builders are isolated modules, so the swap path is clean (see Scaling).
@@ -75,7 +99,7 @@ coach prompt ──► resolver (exact → fuzzy → embedding) ──► constr
 | Resolver | Voyage embeddings computed per call | Precompute catalog embeddings into a vector index (pgvector/FAISS); thresholds stay, only the lookup changes. |
 | Ontology | Curated SNOMED table | Sync from a terminology server (e.g. NCI EVS / Snowstorm) into the same SKOS shape; `verified` flags drive review queues. |
 | Serving | uvicorn, single process | API is stateless (sessions externalized) → horizontal replicas behind a load balancer; SSE streams are per-request and proxy-friendly. |
-| Safety evolution | 3 eval scenarios, 61 tests | The eval pipeline (`make eval`) is the regression gate: every new contraindication rule or catalog import must keep resolver/safety scores green in CI before deploy. |
+| Safety evolution | 3 eval scenarios, 69 tests | The eval pipeline (`make eval`) is the regression gate: every new contraindication rule or catalog import must keep resolver/safety scores green in CI before deploy. |
 | Observability | Timed pipeline traces per generation, structured logs | Same trace events → OpenTelemetry spans; provenance objects are already the audit log a clinical reviewer would ask for. |
 | Auth | Mock login (any name) | Real IdP (OIDC) with coach→member authorization checks at the member-context boundary. |
 
@@ -151,7 +175,7 @@ The project was built by pairing with Claude (Cowork/Claude Code) under the rule
 ```
 backend/app/      graph/ (KG builders) · resolver/ · safety/ · runtime/ (generator)
                   copilot/ (tools + agent loop + Anthropic adapters) · eval/
-backend/tests/    61 tests — red-green TDD on the deterministic core
+backend/tests/    69 tests — red-green TDD on the deterministic core
 frontend/src/     styles/ (Future DS) · components/ (one per file) · derive.ts (pure view-models)
 data/             exercises.json · member-context.json (synthetic)
 docs/             KG_SCHEMA.md · worked-examples.json
