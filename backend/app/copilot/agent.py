@@ -4,7 +4,7 @@ is data returned by tools, never instructions (prompt-injection stance, PRESEARC
 
 import json
 import logging
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -107,3 +107,62 @@ def run_copilot(message: str, session_id: str, llm: LlmFn) -> CopilotResult:
         history_len=len(history),
         error="max_tool_iterations",
     )
+
+
+# ---- streaming variant -------------------------------------------------------
+# The stream LLM is injectable like LlmFn: it yields {"type": "token", "text"}
+# deltas and terminates with {"type": "final", "stop_reason", "content"} carrying
+# the assembled normalized content (same shape LlmFn returns).
+
+StreamLlmFn = Callable[[list, list], Iterator[dict]]
+
+
+def sse_format(event: dict) -> str:
+    """One server-sent-events frame per agent event."""
+    return f"data: {json.dumps(event, default=str)}\n\n"
+
+
+def run_copilot_stream(message: str, session_id: str, llm_stream: StreamLlmFn) -> Iterator[dict]:
+    """Same loop as run_copilot, but yields events as they happen:
+    token deltas, tool invocations, then a final done/error event."""
+    history = _sessions.setdefault(session_id, [])
+    history.append({"role": "user", "content": message})
+
+    tool_calls: list[str] = []
+    for _ in range(MAX_TOOL_ITERATIONS):
+        final: dict | None = None
+        for ev in llm_stream(history, TOOL_SCHEMAS):
+            if ev["type"] == "token":
+                yield {"type": "token", "text": ev["text"]}
+            elif ev["type"] == "final":
+                final = ev
+        if final is None:
+            yield {"type": "error", "error": "stream ended without a final message"}
+            return
+
+        content = final["content"]
+        if final["stop_reason"] != "tool_use":
+            text = " ".join(b["text"] for b in content if b["type"] == "text")
+            history.append({"role": "assistant", "content": text})
+            yield {"type": "done", "reply": text, "tool_calls": tool_calls}
+            return
+
+        history.append({"role": "assistant", "content": content})
+        results = []
+        for block in content:
+            if block["type"] != "tool_use":
+                continue
+            tool_calls.append(block["name"])
+            logger.info("trace step=copilot_tool name=%s stream=1", block["name"])
+            yield {"type": "tool", "name": block["name"]}
+            out = _execute_tool(block["name"], block.get("input") or {})
+            results.append(
+                {
+                    "type": "tool_result",
+                    "tool_use_id": block["id"],
+                    "content": json.dumps(out, default=str),
+                }
+            )
+        history.append({"role": "user", "content": results})
+
+    yield {"type": "error", "error": "max_tool_iterations"}

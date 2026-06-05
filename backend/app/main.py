@@ -3,6 +3,7 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from app.data_loader import load_exercises, load_member_context
@@ -43,8 +44,13 @@ def graph_data() -> dict:
     from app.graph.movement_kg import build_movement_graph
 
     g = build_movement_graph()
-    nodes = [{"id": n, "kind": d["kind"], "name": d["name"]} for n, d in g.nodes(data=True)]
-    links = [{"source": u, "target": v, "rel": d["rel"]} for u, v, d in g.edges(data=True)]
+    # full node attributes (SNOMED mappings, priority tier, …) feed the node
+    # detail popover; edge `mode` distinguishes exclude vs down-rank.
+    nodes = [{"id": n, **d} for n, d in g.nodes(data=True)]
+    links = [
+        {"source": u, "target": v, **d}  # d = {"rel": …} (+ "mode" on contraindications)
+        for u, v, d in g.edges(data=True)
+    ]
     return {"nodes": nodes, "links": links}
 
 
@@ -60,6 +66,22 @@ def copilot_chat(req: ChatRequest) -> dict:
 
     result = run_copilot(req.message, req.session_id, llm=anthropic_chat)
     return {"reply": result.reply, "tool_calls": result.tool_calls, "error": result.error}
+
+
+@app.post("/api/copilot/chat/stream")
+def copilot_chat_stream(req: ChatRequest) -> StreamingResponse:
+    """Token-level streaming (SSE): token / tool / done / error events."""
+    from app.copilot.agent import run_copilot_stream, sse_format
+    from app.copilot.anthropic_chat import anthropic_chat_stream
+
+    def event_source():
+        try:
+            for event in run_copilot_stream(req.message, req.session_id, anthropic_chat_stream):
+                yield sse_format(event)
+        except Exception as exc:  # surface as an SSE error frame, not a dropped socket
+            yield sse_format({"type": "error", "error": str(exc)})
+
+    return StreamingResponse(event_source(), media_type="text/event-stream")
 
 
 @app.get("/api/copilot/quick-prompts")

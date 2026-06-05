@@ -1,4 +1,4 @@
-.PHONY: install dev test lint eval backend frontend
+.PHONY: install dev test lint eval backend frontend check
 
 install:
 	cd backend && pip install -e ".[dev]"
@@ -6,12 +6,12 @@ install:
 
 dev:
 	@trap 'kill 0' INT; \
-	(cd backend && uvicorn app.main:app --reload --port 8000) & \
+	(cd backend && python3 -m uvicorn app.main:app --reload --port 8000) & \
 	(cd frontend && npm run dev) & \
 	wait
 
 backend:
-	cd backend && uvicorn app.main:app --reload --port 8000
+	cd backend && python3 -m uvicorn app.main:app --reload --port 8000
 
 frontend:
 	cd frontend && npm run dev
@@ -25,3 +25,5 @@ lint:
 
 eval:
 	cd backend && python -m app.eval.run
+
+check: lint test
