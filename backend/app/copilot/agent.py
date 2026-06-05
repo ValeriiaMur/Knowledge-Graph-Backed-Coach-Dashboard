@@ -71,6 +71,35 @@ def _execute_tool(name: str, tool_input: dict) -> Any:
         return {"error": f"tool '{name}' failed: {exc}"}
 
 
+def _assistant_text(content: list[dict]) -> str:
+    """Join the text blocks of a final (non-tool) assistant message."""
+    return " ".join(b["text"] for b in content if b["type"] == "text")
+
+
+def _dispatch_tools(content: list[dict], history: list, tool_calls: list[str]) -> Iterator[dict]:
+    """Run every tool_use block in `content`, then append the assistant message
+    and the tool_result message to `history`. Yields one {"type": "tool"} event
+    per call — the streaming path forwards them, the sync path drains them. Shared
+    so the tool_result shape stays byte-identical across both copilot paths."""
+    history.append({"role": "assistant", "content": content})
+    results = []
+    for block in content:
+        if block["type"] != "tool_use":
+            continue
+        tool_calls.append(block["name"])
+        logger.info("trace step=copilot_tool name=%s", block["name"])
+        yield {"type": "tool", "name": block["name"]}
+        out = _execute_tool(block["name"], block.get("input") or {})
+        results.append(
+            {
+                "type": "tool_result",
+                "tool_use_id": block["id"],
+                "content": json.dumps(out, default=str),
+            }
+        )
+    history.append({"role": "user", "content": results})
+
+
 def run_copilot(message: str, session_id: str, llm: LlmFn) -> CopilotResult:
     history = _sessions.setdefault(session_id, [])
     history.append({"role": "user", "content": message})
@@ -81,26 +110,12 @@ def run_copilot(message: str, session_id: str, llm: LlmFn) -> CopilotResult:
         content = response["content"]
 
         if response["stop_reason"] != "tool_use":
-            text = " ".join(b["text"] for b in content if b["type"] == "text")
+            text = _assistant_text(content)
             history.append({"role": "assistant", "content": text})
             return CopilotResult(reply=text, tool_calls=tool_calls, history_len=len(history))
 
-        history.append({"role": "assistant", "content": content})
-        results = []
-        for block in content:
-            if block["type"] != "tool_use":
-                continue
-            tool_calls.append(block["name"])
-            logger.info("trace step=copilot_tool name=%s", block["name"])
-            out = _execute_tool(block["name"], block.get("input") or {})
-            results.append(
-                {
-                    "type": "tool_result",
-                    "tool_use_id": block["id"],
-                    "content": json.dumps(out, default=str),
-                }
-            )
-        history.append({"role": "user", "content": results})
+        for _ in _dispatch_tools(content, history, tool_calls):
+            pass  # sync path: execute tools, ignore the per-call events
 
     return CopilotResult(
         reply="I couldn't finish answering — too many retrieval steps. Try a narrower question.",
@@ -143,27 +158,11 @@ def run_copilot_stream(message: str, session_id: str, llm_stream: StreamLlmFn) -
 
         content = final["content"]
         if final["stop_reason"] != "tool_use":
-            text = " ".join(b["text"] for b in content if b["type"] == "text")
+            text = _assistant_text(content)
             history.append({"role": "assistant", "content": text})
             yield {"type": "done", "reply": text, "tool_calls": tool_calls}
             return
 
-        history.append({"role": "assistant", "content": content})
-        results = []
-        for block in content:
-            if block["type"] != "tool_use":
-                continue
-            tool_calls.append(block["name"])
-            logger.info("trace step=copilot_tool name=%s stream=1", block["name"])
-            yield {"type": "tool", "name": block["name"]}
-            out = _execute_tool(block["name"], block.get("input") or {})
-            results.append(
-                {
-                    "type": "tool_result",
-                    "tool_use_id": block["id"],
-                    "content": json.dumps(out, default=str),
-                }
-            )
-        history.append({"role": "user", "content": results})
+        yield from _dispatch_tools(content, history, tool_calls)  # surfaces tool events
 
     yield {"type": "error", "error": "max_tool_iterations"}

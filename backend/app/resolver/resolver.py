@@ -98,3 +98,18 @@ def resolve(query: str, embed_fn: EmbedFn | None = None) -> ResolvedConcept:
 
     # Graceful degradation: report the attempt, never guess.
     return ResolvedConcept(query, None, "none", 0.0, tried)
+
+
+@lru_cache(maxsize=512)
+def resolve_concept(query: str) -> ResolvedConcept:
+    """Deliberate single-concept resolution *with* the Voyage embedding pass, cached.
+
+    Use this for one-off, intentional lookups. Do NOT use it in the n-gram prompt
+    scanner (runtime/constraints.py): that resolves many grams per request, and
+    pass 3 fires a paid embedding call for each gram that misses exact+fuzzy.
+    Degrades to exact+fuzzy automatically when VOYAGE_API_KEY is unset
+    (voyage_embed returns []), so callers and tests stay deterministic offline.
+    """
+    from app.resolver.embeddings import voyage_embed
+
+    return resolve(query, embed_fn=voyage_embed)

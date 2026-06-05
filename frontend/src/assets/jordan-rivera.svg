@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260" role="img" aria-label="Synthetic illustrated portrait of Jordan Rivera (fictional member)">
+  <!-- Synthetic, fictional member portrait — flat illustration in the Future DS
+       palette. No real person; generated as project art per the spec's
+       "generate additional data synthetically" rule. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e9e8ea"/>
+      <stop offset="0.5" stop-color="#f3ecd9"/>
+      <stop offset="1" stop-color="#f4e8c6"/>
+    </linearGradient>
+    <clipPath id="frame"><rect width="300" height="260"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="300" height="260" fill="url(#bg)"/>
+
+    <!-- accent halo -->
+    <circle cx="150" cy="120" r="86" fill="#f1ce46"/>
+    <circle cx="150" cy="120" r="86" fill="none" stroke="#e3bb2b" stroke-width="2"/>
+
+    <!-- subtle hatch texture, echoing the DS hatch pills -->
+    <g stroke="#201f1c" stroke-opacity="0.05" stroke-width="3">
+      <line x1="-20" y1="240" x2="120" y2="100"/>
+      <line x1="0" y1="260" x2="150" y2="110"/>
+      <line x1="180" y1="280" x2="330" y2="130"/>
+      <line x1="210" y1="290" x2="350" y2="150"/>
+    </g>
+
+    <!-- ponytail (behind head) -->
+    <path d="M188 70 q26 10 22 48 q-3 30 -14 46 q-8 -6 -10 -16 q9 -28 -4 -56 z" fill="#201f1c"/>
+
+    <!-- neck -->
+    <rect x="138" y="128" width="24" height="26" rx="10" fill="#c98e63"/>
+
+    <!-- head -->
+    <path d="M118 92 a32 36 0 1 0 64 0 a32 36 0 1 0 -64 0 z" fill="#d59a6e"/>
+
+    <!-- hair: swept back into the ponytail -->
+    <path d="M114 96 q-4 -44 36 -46 q40 -2 38 44 q-1 -10 -8 -16 q2 8 -2 12 q-4 -16 -16 -20 q4 6 3 12 q-10 -14 -28 -10 q-16 4 -19 24 z" fill="#201f1c"/>
+    <path d="M114 96 q2 10 8 14 l-2 -16 z" fill="#201f1c"/>
+
+    <!-- ears + earring accent -->
+    <circle cx="116" cy="98" r="6" fill="#c98e63"/>
+    <circle cx="184" cy="98" r="6" fill="#c98e63"/>
+    <circle cx="184" cy="106" r="2.4" fill="#2a2410"/>
+
+    <!-- minimal features -->
+    <path d="M134 98 q5 -4 10 0" stroke="#2a2410" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <path d="M156 98 q5 -4 10 0" stroke="#2a2410" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <path d="M147 106 q3 5 0 8" stroke="#b87a52" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M141 122 q9 6 18 0" stroke="#9c5a38" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+
+    <!-- shoulders / athletic top -->
+    <path d="M70 260 q4 -74 56 -106 q12 14 24 14 q12 0 24 -14 q52 32 56 106 z" fill="#242320"/>
+    <path d="M120 168 q30 22 60 0 l-6 -10 q-24 16 -48 0 z" fill="#2c2a26"/>
+
+    <!-- racerback strap lines -->
+    <path d="M118 200 q32 -18 64 0" stroke="#f4f1ea" stroke-opacity="0.2" stroke-width="3" fill="none"/>
+
+    <!-- small accent: hand weight resting on shoulder line -->
+    <g transform="translate(226 206) rotate(-18)">
+      <rect x="-4" y="-16" width="8" height="32" rx="3" fill="#f1ce46"/>
+      <rect x="-14" y="-22" width="10" height="14" rx="3" fill="#201f1c"/>
+      <rect x="4" y="-22" width="10" height="14" rx="3" fill="#201f1c"/>
+      <rect x="-14" y="8" width="10" height="14" rx="3" fill="#201f1c"/>
+      <rect x="4" y="8" width="10" height="14" rx="3" fill="#201f1c"/>
+    </g>
+  </g>
+</svg>

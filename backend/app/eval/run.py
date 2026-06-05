@@ -2,7 +2,7 @@
 over a hand-labeled set. Doubles as the regression suite (PRESEARCH §9/§13)."""
 
 from app.graph.terms import Rel
-from app.resolver.resolver import resolve
+from app.resolver.resolver import resolve_concept
 from app.safety.filter import SafetyConstraints, apply_safety_filter
 
 # query -> expected node_id (None = must honestly no-match)
@@ -54,7 +54,9 @@ SAFETY_SCENARIOS = [
 def run_resolver_eval() -> tuple[int, int, list[str]]:
     correct, failures = 0, []
     for query, expected in RESOLVER_CASES.items():
-        r = resolve(query)
+        # Deliberate single-concept lookups → use the full 3-pass resolver,
+        # including the Voyage embedding pass when a key is present.
+        r = resolve_concept(query)
         got = r.node_id
         if got == expected:
             correct += 1

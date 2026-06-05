@@ -1,5 +1,6 @@
-import { dayBadge, initials } from "../derive";
+import { dayBadge } from "../derive";
 import type { MemberProfile } from "../types";
+import portrait from "../assets/jordan-rivera.svg";
 
 type Props = { member: MemberProfile; now: Date };
 
@@ -8,10 +9,9 @@ export function ProfileCard({ member, now }: Props): JSX.Element {
   return (
     <div className="c c-pad g-profile rise" style={{ animationDelay: ".05s" }}>
       <div className="profile-photo">
-        {/* dataset is synthetic — no member photo, so an initials avatar fills the slot */}
-        <div className="avatar-fill">
-          <span className="avatar-initials">{initials(profile.name)}</span>
-        </div>
+        {/* synthetic illustrated portrait — fictional member, generated for the
+            demo per the spec's synthetic-data rule (no real person) */}
+        <img className="profile-img" src={portrait} alt={`${profile.name} (illustration)`} />
         <div className="profile-grad"></div>
         <div className="profile-meta">
           <div>
