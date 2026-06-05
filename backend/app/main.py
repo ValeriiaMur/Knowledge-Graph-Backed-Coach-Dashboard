@@ -4,9 +4,9 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -21,10 +21,12 @@ app = FastAPI(title="Coach Dashboard API")
 
 # Same-origin in production (FastAPI serves the SPA), so CORS is only needed for
 # the Vite dev server. Override via ALLOWED_ORIGINS (comma-separated) if needed.
-_allowed_origins = os.environ.get("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+_allowed_origins = [
+    o.strip() for o in os.environ.get("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o.strip() for o in _allowed_origins if o.strip()],
+    allow_origins=[o for o in _allowed_origins if o],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -137,15 +139,8 @@ _dist = os.environ.get("FRONTEND_DIST")
 _FRONTEND_DIST = Path(_dist) if _dist else Path(__file__).resolve().parents[2] / "frontend" / "dist"
 
 if _FRONTEND_DIST.is_dir():
-    app.mount("/assets", StaticFiles(directory=_FRONTEND_DIST / "assets"), name="assets")
-
-    @app.get("/{full_path:path}")
-    def spa_fallback(full_path: str) -> FileResponse:
-        """Serve real files when they exist; otherwise hand back index.html so
-        client-side routing works. /api/* never reaches here (matched above)."""
-        if full_path.startswith("api/"):
-            raise HTTPException(status_code=404, detail="Not found")
-        candidate = _FRONTEND_DIST / full_path
-        if full_path and candidate.is_file():
-            return FileResponse(candidate)
-        return FileResponse(_FRONTEND_DIST / "index.html")
+    # Mounted last, so the /api/* routes above take precedence. html=True serves
+    # index.html at "/" and resolves /assets/* automatically; StaticFiles owns
+    # file lookup and caching headers, so no hand-rolled serving is needed. (The
+    # app has no client-side routing, so a deep-link index.html fallback is moot.)
+    app.mount("/", StaticFiles(directory=_FRONTEND_DIST, html=True), name="spa")

@@ -105,6 +105,19 @@ def what_changed() -> dict:
     }
 
 
+def get_progression() -> dict:
+    """Longitudinal progression: adherence/RPE/volume/weight trends over time,
+    with a one-line summary. Use for 'how is she progressing?' questions."""
+    from app.copilot.longitudinal import compute_progression
+
+    _, m = _member()
+    return compute_progression(
+        m["adherence"]["weekly_completion_pct"],
+        get_workout_history(),
+        m["biomarkers"],
+    )
+
+
 def get_timeseries(metric: str) -> dict:
     """Chart-ready series. Supported: adherence, sleep, resting_hr, hrv, weight."""
     _, m = _member()
@@ -144,5 +157,6 @@ TOOL_REGISTRY: dict[str, Any] = {
     "get_chat_history": get_chat_history,
     "get_workout_history": get_workout_history,
     "what_changed": what_changed,
+    "get_progression": get_progression,
     "get_timeseries": get_timeseries,
 }

@@ -16,7 +16,7 @@ make dev                     # backend :8000 + frontend :5173
 
 Open http://localhost:5173, log in with any coach name (mock auth per spec), and you land on the dashboard.
 
-Other targets: `make test` (61 backend tests) · `make lint` (ruff + eslint + prettier, zero-warning bar) · `make eval` (resolver 15/15 · safety 3/3 · plan quality 3/3).
+Other targets: `make test` (67 backend tests) · `make lint` (ruff + eslint + prettier, zero-warning bar) · `make eval` (resolver 15/15 · safety 3/3 · plan quality 3/3).
 
 Without `ANTHROPIC_API_KEY` everything deterministic still works — member dashboard, graph view, chart prompts, and the full safety/provenance pipeline; only LLM plan composition and free-form copilot chat need the key. `VOYAGE_API_KEY` enables the resolver's third (embedding) pass; without it the resolver degrades gracefully to exact + fuzzy.
 
@@ -42,7 +42,7 @@ coach prompt ──► resolver (exact → fuzzy → embedding) ──► constr
 - **KG 1 (movement/clinical):** 161 nodes, 424 edges — exercises, muscles, joints, anatomy `part_of` hierarchy, equipment, movement patterns, and conditions with `contraindicated_for` edges (`exclude` vs `down_rank`). Joints and conditions carry SKOS mappings to SNOMED CT (curated lookup table, no live terminology API).
 - **KG 2 (member context):** profile, injury→joint bridge (`left knee` → `joint:knee`), equipment, goals, sessions, chats. Member constraints (injury, condition, available equipment) are **auto-applied** to every generation — the coach doesn't have to remember them.
 - **Resolver:** 3 passes — exact (with synonyms/aliases) → fuzzy ≥ 0.85 → embedding cosine ≥ 0.75 (Voyage). Below threshold means an honest no-match surfaced to the coach, never a silent drop.
-- **Copilot:** hand-rolled Anthropic tool-use loop over 13 retrieval tools on KG 2. The model never sees raw member data outside tool results — grounding by construction. Member chat text returned by tools is treated as quoted data, not instructions (prompt-injection stance). Replies stream token-by-token over SSE.
+- **Copilot:** hand-rolled Anthropic tool-use loop over 14 retrieval tools on KG 2. The model never sees raw member data outside tool results — grounding by construction. Member chat text returned by tools is treated as quoted data, not instructions (prompt-injection stance). Replies stream token-by-token over SSE.
 - **Frontend:** React + Vite, strict TypeScript (`noUncheckedIndexedAccess`), one component per file. The whole UI is built on the **Future DS** design system (`frontend/src/styles/future-ds.css` — tokens, accent variants, dark theme, pill/card/tag primitives); the dashboard renders only data derived from `/api/member` and `/api/generate` via pure functions in `src/derive.ts` — no hardcoded member data anywhere.
 
 ## Why this tech, and why this way
@@ -58,6 +58,8 @@ coach prompt ──► resolver (exact → fuzzy → embedding) ──► constr
 **Injectable LLMs everywhere.** Both the composer and the copilot take the model call as a function argument. Tests inject deterministic fakes (red-green TDD on the deterministic core); production injects the Anthropic adapters. The streaming variant follows the same contract (`token…` then `final`), so the loop logic is tested without a network.
 
 **Deterministic chart prompts.** "Plot adherence trend" renders straight from the timeseries endpoint with zero LLM round-trip — instant, always grounded, and immune to hallucinated numbers.
+
+**Longitudinal reasoning, deterministic.** Progression over time (adherence slope, week-over-week deltas, session volume, RPE and weight trends) is computed by pure functions (`app/copilot/longitudinal.py`), not by asking the LLM to eyeball history. It surfaces twice: the copilot's `get_progression` tool ("How is she progressing?" quick prompt), and as `member_progression` in the generator's composition payload — so a plan for a member with declining adherence is dosed against her actual trajectory. Guidance only; safety still lives in the filter.
 
 **Curated SNOMED lookup instead of a live terminology server.** SKOS mappings (`exactMatch`/`closeMatch`, verified flags) are stored on the nodes. This keeps the demo hermetic while preserving the ontology-grounding shape a production system would need.
 
@@ -112,7 +114,7 @@ or use the **Generate** tab — the provenance card renders resolved concepts, r
 
 ## Testing & evals
 
-**Unit tests (61, red-green TDD on the deterministic core).** The spec mandates tests for the resolver and safety filter at minimum; those are the critical paths because they make the safety guarantees — a resolver false negative silently drops a coach's constraint, and a filter bug is exactly the unsafe-recommendation failure the project exists to prevent. Coverage: resolver (10), safety filter (8), both KG builders (11), runtime/validation (8), copilot tools + agent loop (12), streaming loop (5), data loader (5), graph endpoint (2). LLM-composition code is tested *structurally* (schema-valid output, no filtered exercise present) — never string-matched.
+**Unit tests (67, red-green TDD on the deterministic core).** The spec mandates tests for the resolver and safety filter at minimum; those are the critical paths because they make the safety guarantees — a resolver false negative silently drops a coach's constraint, and a filter bug is exactly the unsafe-recommendation failure the project exists to prevent. Coverage: resolver (10), safety filter (8), both KG builders (11), runtime/validation (8), copilot tools + agent loop (12), streaming loop (5), longitudinal trends (6), data loader (5), graph endpoint (2). LLM-composition code is tested *structurally* (schema-valid output, no filtered exercise present) — never string-matched.
 
 **Eval pipeline (`make eval`)** — the regression gate, runs offline (no API key):
 
@@ -130,6 +132,7 @@ or use the **Generate** tab — the provenance card renders resolved concepts, r
 
 ## Trade-offs & known limits
 
+- **Multi-agent orchestration** is the one nice-to-have deliberately not built: the architecture is agent-ready (the copilot could gain a `generate_workout` tool delegating to the generation pipeline — two agents with clean boundaries), but a router adds latency and failure modes without changing any safety property, so within the timebox it stayed a documented extension rather than code. All other nice-to-haves (graph viz, streaming, eval pipeline, tracing, SNOMED grounding, longitudinal reasoning) are implemented.
 - **Token streaming** is implemented for copilot chat (SSE: `token` / `tool` / `done` events, non-streaming fallback in the client). Generation is *not* streamed — plans are validated atomically before anything is shown, which is the safer UX for a clinical-ish artifact.
 - **Resolver false positives near threshold** (see example 3). Tuning data: `make eval` keeps resolver accuracy visible; thresholds live in one place.
 - **No deadlifts in the catalog** makes acceptance scenario 1 trivially pass; the mechanism is exercised by the barbell scenario instead.

@@ -89,6 +89,14 @@ def generate_workout(
         "removed": [{"node_id": r.node_id, "reason": r.reason} for r in result.removed],
     }
 
+    if use_member_context:
+        # Longitudinal context (nice-to-have): the composer sees the member's
+        # trajectory (declining adherence, RPE trend, recent volume) so it can
+        # dose conservatively — guidance only; safety stays in the filter above.
+        from app.copilot.retrieval import get_progression
+
+        payload["member_progression"] = get_progression()
+
     raw = _timed(trace, "compose_plan", lambda: llm(payload), candidates=len(result.allowed))
 
     allowed_ids = {e.node_id for e in result.allowed}

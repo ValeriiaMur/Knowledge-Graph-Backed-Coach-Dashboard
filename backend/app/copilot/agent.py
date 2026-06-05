@@ -19,6 +19,7 @@ QUICK_PROMPTS: list[str] = [
     "How's adherence trending?",
     "Sleep this week",
     "What changed since last week?",
+    "How is she progressing?",
     "Is she at risk of churning?",
     "Plot adherence trend",
     "Show message pattern",
