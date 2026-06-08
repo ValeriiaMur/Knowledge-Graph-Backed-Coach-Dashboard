@@ -16,6 +16,19 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "ruff>=0.4", "httpx>=0.27"]
+# Answer-quality eval lane (`make eval-ragas`) — optional, LLM-judge based.
+# Kept out of `dev` so the deterministic gate stays dependency-light.
+# Pinned to the ragas 0.2.x / langchain 0.3.x matrix: ragas 0.4.x ships an
+# import of `langchain_community.chat_models.vertexai`, which langchain-community
+# >=0.4 removed — so the newest resolve breaks at import. This matrix is
+# self-consistent.
+eval = [
+    "ragas>=0.2.14,<0.3",
+    "langchain-core>=0.3,<0.4",
+    "langchain-community>=0.3,<0.4",
+    "langchain-anthropic>=0.2,<0.4",
+    "langchain-voyageai>=0.1,<0.3",
+]
 
 [build-system]
 requires = ["setuptools>=68"]

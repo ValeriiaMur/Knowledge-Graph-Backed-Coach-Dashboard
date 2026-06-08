@@ -16,7 +16,7 @@ make dev                     # backend :8000 + frontend :5173
 
 Open http://localhost:5173, log in with any coach name (mock auth per spec), and you land on the dashboard.
 
-Other targets: `make test` (69 backend tests) · `make lint` (ruff + eslint + prettier, zero-warning bar) · `make eval` (resolver 15/15 · safety 3/3 · plan quality 3/3).
+Other targets: `make test` (69 backend tests) · `make lint` (ruff + eslint + prettier, zero-warning bar) · `make eval` (resolver 15/15 · safety 3/3 · plan quality 3/3) · `make eval-ragas` (copilot answer-quality, LLM-judge — optional, needs `.[eval]` + keys).
 
 Without `ANTHROPIC_API_KEY` everything deterministic still works — member dashboard, graph view, chart prompts, and the full safety/provenance pipeline; only LLM plan composition and free-form copilot chat need the key. `VOYAGE_API_KEY` enables the resolver's third (embedding) pass; without it the resolver degrades gracefully to exact + fuzzy.
 
@@ -148,11 +148,13 @@ or use the **Generate** tab — the provenance card renders resolved concepts, r
 - *Safety correctness* — the 3 acceptance scenarios verified against the graph (no allowed exercise stresses the injured joint / requires unavailable equipment / matches an excluded term): 3/3.
 - *Plan quality* — structural checks on full generations (warmup/main/cooldown present, no filtered IDs, sane doses, non-empty provenance): 3/3.
 
+**Answer-quality eval (`make eval-ragas`)** — the one thing the deterministic gate can't score: whether the copilot's *natural-language* answer is faithful to what it retrieved. Kept as a separate lane on purpose — it uses an LLM judge (non-deterministic, costs tokens, needs network), so it never gates fast CI. It runs the live copilot over a labeled case set (`app/eval/copilot_cases.py`), captures each answer's `tool_result` payloads as the retrieved contexts, and scores three [Ragas](https://docs.ragas.io) metrics with the project's own models (Anthropic as judge, Voyage as embeddings — no new credentials): *Faithfulness* (answer grounded in retrieved context — turns the "grounding by construction" claim into a number), *answer relevancy*, and *context precision*. The set includes a grounding probe (a metric absent from the member) where a faithful copilot must decline. Install with `pip install -e '.[eval]'`.
+
 **Evaluating in production — metrics, failure modes, monitoring:**
 
 - *Safety (the metric that matters):* zero plans containing a filtered exercise — enforced at runtime by validation, monitored by logging every rejection; any occurrence is a sev-1. Track contraindication-rule coverage as the catalog grows.
 - *Resolver quality:* precision/recall on a growing labeled set from real coach prompts; alert on rising no-match rate (vocabulary drift) and on near-threshold matches (the documented 0.85-fuzzy false-positive band) — sample those for human review.
-- *Copilot grounding:* fraction of replies with ≥1 tool call; "not in this member's context" rate vs. hallucination spot-checks; periodic LLM-as-judge pass over sampled transcripts scored against tool outputs.
+- *Copilot grounding:* fraction of replies with ≥1 tool call; "not in this member's context" rate vs. hallucination spot-checks; the `make eval-ragas` Faithfulness/relevancy/context-precision pass over sampled transcripts scored against tool outputs (run periodically, alert on Faithfulness regressions).
 - *Latency & cost:* the per-stage timed trace (resolve → filter → compose) already separates deterministic time (~2 ms) from LLM time; alert when compose p95 exceeds the ~5 s budget. Token usage logged per call.
 - *Failure modes watched:* over-filtering (allowed_count → 0 spikes), composer schema violations (rejected-plan rate), tool errors in the agent loop, SSE disconnects.
 
