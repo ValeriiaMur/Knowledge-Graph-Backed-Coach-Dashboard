@@ -126,7 +126,7 @@ def main() -> int:
         return 0
 
     try:
-        from ragas import EvaluationDataset, evaluate
+        from ragas import EvaluationDataset, RunConfig, evaluate
     except Exception as exc:  # ragas present but its import chain is broken
         print(
             "ragas-eval: SKIPPED — ragas is installed but failed to import "
@@ -142,7 +142,17 @@ def main() -> int:
 
     llm, embeddings = _judges()
     print("ragas-eval: scoring with Anthropic judge + Voyage embeddings…")
-    report = evaluate(dataset, metrics=_metrics(), llm=llm, embeddings=embeddings)
+    # Voyage's free tier caps embeddings at 3 RPM / 10K TPM; Ragas otherwise fires
+    # all metric jobs concurrently and the throttled calls fail → nan scores. Run
+    # single-threaded with generous retries so we stay under the limit. Set
+    # RAGAS_MAX_WORKERS>1 once the Voyage account has a payment method (real limits).
+    run_config = RunConfig(
+        max_workers=int(os.environ.get("RAGAS_MAX_WORKERS", "1")),
+        max_retries=15,
+    )
+    report = evaluate(
+        dataset, metrics=_metrics(), llm=llm, embeddings=embeddings, run_config=run_config
+    )
 
     df = report.to_pandas()
     print("\n=== Ragas scores (per metric mean) ===")
